@@ -1,8 +1,6 @@
 package com.xmies.Library.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "statistics")
@@ -16,6 +14,11 @@ public class Statistics {
 
     @Column(name = "now_borrowed")
     private int nowBorrowed;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
     public Statistics() {
     }
@@ -57,5 +60,9 @@ public class Statistics {
                 ", timesBought=" + timesBought +
                 ", nowBorrowed=" + nowBorrowed +
                 '}';
+    }
+
+    public int getId() {
+        return id;
     }
 }
