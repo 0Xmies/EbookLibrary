@@ -89,7 +89,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<Review> getAllReviews() {
+    public List<Review> findAllReviews() {
         return reviewRepository.findAllByOrderByRatingDesc();
     }
 

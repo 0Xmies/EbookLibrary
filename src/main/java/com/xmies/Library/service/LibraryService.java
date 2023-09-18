@@ -24,7 +24,7 @@ public interface LibraryService {
 
     void deleteBookById(int id);
 
-    List<Review> getAllReviews();
+    List<Review> findAllReviews();
 
     Review findReviewById(int id);
 
