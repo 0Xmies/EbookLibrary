@@ -45,7 +45,7 @@
                         Update
                     </a>
 
-                    <a  th:href="@{~/admin/delete(bookId=${book.id})}"
+                    <a  th:href="@{~/admin/deleteBook(bookId=${book.id})}"
                         class="btn btn-danger"
                         onclick="if (!(confirm('Are you sure you want to delete this book?'))) return false">
                         Delete
@@ -55,6 +55,9 @@
             </tr>
         </tbody>
      </table>
+
+    <a th:href="@{~/library/menu}">Back to menu</a>
+
 </div>
 
 </body>

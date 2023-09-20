@@ -18,20 +18,28 @@
 
     </span>
 
+    <span class="fs-3">
+
+
+
+    </span>
+
     <hr>
     <p th:text="${book.title}" class="fs-2 fw-bold"></p>
 
-    <a th:href="@{~/library/addReview}" class="btn btn-primary mb-2"> Add review </a>
+    <a th:href="@{list}" class="btn btn-primary mb-2"> Back to list</a>
+    <br>
+
+    <a th:href="@{addReview}" class="btn btn-primary mb-2"> Add review </a>
+    <a th:href="@{seeReviews}" class="btn btn-primary mb-2"> See reviews </a>
     <a th:href="@{~/admin/updateReview}" class="btn btn-info mb-2"> Update review </a>
     <a th:href="@{~/admin/deleteReview}" class="btn btn-danger mb-2"> Delete review </a>
     <br>
 
-    <a th:href="@{~/admin/addAuthor}" class="btn btn-primary mb-2"> Add author </a>
-    <a th:href="@{~/admin/updateAuthor}" class="btn btn-info mb-2"> Update author </a>
-    <a th:href="@{~/admin/deleteAuthor}" class="btn btn-danger mb-2"> Delete author </a>
+    <a th:href="@{~/admin/manageAuthors(bookId=${book.id})}" class="btn btn-primary mb-2"> Manage Authors </a>
     <br>
 
-    <a th:href="@{~/admin/addAuthorDetail}" class="btn btn-primary mb-2"> Add author details </a>
+    <a th:href="@{~/admin/addAuthorDetailForm}" class="btn btn-primary mb-2"> Add author details </a>
     <a th:href="@{~/admin/updateAuthorDetail}" class="btn btn-info mb-2"> Update author details</a>
     <a th:href="@{~/admin/deleteAuthorDetail}" class="btn btn-danger mb-2"> Delete author details</a>
 
