@@ -1,8 +1,10 @@
 package com.xmies.Library.controller;
 
+import com.xmies.Library.entity.Author;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,12 @@ public class UserLibraryController {
         this.libraryService = libraryService;
     }
 
+    @GetMapping("/menu")
+    public String menu() {
+
+        return "library/menu";
+    }
+
     @GetMapping("/list")
     public String listBooks(Model model) {
 
@@ -30,6 +38,16 @@ public class UserLibraryController {
         model.addAttribute("books", books);
 
         return "library/list-books";
+    }
+
+    @GetMapping("/authorsList")
+    public String getAuthorsList(Model model) {
+
+        List<Author> authors = libraryService.findAllAuthors();
+
+        model.addAttribute("authors", authors);
+
+        return "library/list-authors";
     }
 
     @GetMapping("/book-information")
