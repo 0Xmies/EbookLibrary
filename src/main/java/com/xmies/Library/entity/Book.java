@@ -47,7 +47,6 @@ public class Book {
         }
 
         authors.add(author);
-        author.addBook(this);
     }
 
     public void setReviews(List<Review> reviews) {
@@ -60,7 +59,6 @@ public class Book {
             reviews = new ArrayList<>();
         }
 
-        review.setBook(this);
         reviews.add(review);
     }
 

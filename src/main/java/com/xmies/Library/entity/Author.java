@@ -55,7 +55,6 @@ public class Author {
         }
 
         books.add(book);
-        book.addAuthor(this);
     }
 
     public Author() {
