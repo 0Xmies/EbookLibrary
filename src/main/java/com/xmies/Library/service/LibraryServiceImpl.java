@@ -3,9 +3,11 @@ package com.xmies.Library.service;
 import com.xmies.Library.entity.Author;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.entity.Review;
+import com.xmies.Library.repository.AuthorDetailRepository;
 import com.xmies.Library.repository.AuthorRepository;
 import com.xmies.Library.repository.BookRepository;
 import com.xmies.Library.repository.ReviewRepository;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +18,28 @@ import java.util.Optional;
 public class LibraryServiceImpl implements LibraryService {
 
     private AuthorRepository authorRepository;
+    private AuthorDetailRepository authorDetailRepository;
     private BookRepository bookRepository;
     private ReviewRepository reviewRepository;
 
     @Autowired
-    public LibraryServiceImpl(AuthorRepository authorRepository, BookRepository bookRepository, ReviewRepository reviewRepository) {
+    public LibraryServiceImpl(AuthorRepository authorRepository, BookRepository bookRepository,
+                              ReviewRepository reviewRepository, AuthorDetailRepository authorDetailRepository) {
+
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.reviewRepository = reviewRepository;
+        this.authorDetailRepository = authorDetailRepository;
     }
 
     @Override
     public List<Author> findAllAuthors() {
         return authorRepository.findAllByOrderByLastNameAsc();
+    }
+
+    @Override
+    public List<Author> findAuthorsByBookId(int id) {
+        return authorRepository.findAuthorsByBookId(id);
     }
 
     @Override
@@ -118,4 +129,15 @@ public class LibraryServiceImpl implements LibraryService {
     public void deleteReviewById(int id) {
         reviewRepository.deleteById(id);
     }
+
+    @Override
+    public void bindAuthorToBook(int authorId, int bookId) {
+
+        Author author = this.findAuthorById(authorId);
+        Book book = findBookById(bookId);
+
+        author.addBook(book);
+        authorRepository.save(author);
+    }
+
 }

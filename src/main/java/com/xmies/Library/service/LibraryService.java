@@ -10,6 +10,8 @@ public interface LibraryService {
 
     List<Author> findAllAuthors();
 
+    List<Author> findAuthorsByBookId(int id);
+
     Author findAuthorById(int id);
 
     void save(Author author);
@@ -31,4 +33,7 @@ public interface LibraryService {
     void save(Review review);
 
     void deleteReviewById(int id);
+
+    void bindAuthorToBook(int authorId, int bookId);
+
 }
