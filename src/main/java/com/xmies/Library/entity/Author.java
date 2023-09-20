@@ -55,7 +55,6 @@ public class Author {
         }
 
         books.add(book);
-        book.addAuthor(this);
     }
 
     public Author() {
@@ -68,6 +67,10 @@ public class Author {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
