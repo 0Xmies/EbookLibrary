@@ -1,6 +1,7 @@
 package com.xmies.Library.service;
 
 import com.xmies.Library.entity.Author;
+import com.xmies.Library.entity.AuthorDetail;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.entity.Review;
 import com.xmies.Library.repository.AuthorDetailRepository;
@@ -30,6 +31,31 @@ public class LibraryServiceImpl implements LibraryService {
         this.bookRepository = bookRepository;
         this.reviewRepository = reviewRepository;
         this.authorDetailRepository = authorDetailRepository;
+    }
+
+    @Override
+    public AuthorDetail findAuthorDetail(int id) {
+
+        Optional<AuthorDetail> result = authorDetailRepository.findById(id);
+        AuthorDetail authorDetail;
+
+        if (result.isPresent()) {
+            authorDetail = result.get();
+        } else {
+            throw new RuntimeException("Did not find authorDetails id = " + id);
+        }
+
+        return authorDetail;
+    }
+
+    @Override
+    public void save(AuthorDetail authorDetail) {
+        authorDetailRepository.save(authorDetail);
+    }
+
+    @Override
+    public void deleteAuthorDetailById(int id) {
+        authorDetailRepository.deleteById(id);
     }
 
     @Override
