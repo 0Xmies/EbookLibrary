@@ -38,9 +38,15 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<Author> findAuthorsByBookId(int id) {
-        return authorRepository.findAuthorsByBookId(id);
+    public List<Author> findAuthorsAndBookByBookId(int id) {
+        return authorRepository.findAuthorsAndBookByBookId(id);
     }
+
+    @Override
+    public Book findBookAndAuthorsByBookId(int id) {
+        return bookRepository.findBookAndAuthorsByBookId(id);
+    }
+
 
     @Override
     public Author findAuthorById(int id) {

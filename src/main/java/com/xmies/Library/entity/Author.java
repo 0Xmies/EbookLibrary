@@ -24,7 +24,7 @@ public class Author {
     @JoinColumn(name = "author_detail_id")
     private AuthorDetail authorDetail;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REMOVE})
     @JoinTable(
             name = "book_author",
             joinColumns = @JoinColumn(name = "author_id"),

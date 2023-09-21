@@ -23,7 +23,6 @@ public class AdminLibraryController {
     public String addBookForm(Model model) {
 
         Book book = new Book();
-
         model.addAttribute("book", book);
 
         return "library/book-add-form";
@@ -41,7 +40,6 @@ public class AdminLibraryController {
     public String updateBook(@RequestParam("bookId") int id, Model model) {
 
         Book book = libraryService.findBookById(id);
-
         model.addAttribute("book", book);
 
         return "library/book-add-form";
@@ -59,7 +57,6 @@ public class AdminLibraryController {
     public String addAuthorForm(Model model) {
 
         Author author = new Author();
-
         model.addAttribute("author", author);
 
         return "library/author-add-form";
@@ -73,21 +70,10 @@ public class AdminLibraryController {
         return "redirect:/library/authorsList";
     }
 
-
-    @PostMapping(value = "/saveAuthor", params = "bookId")
-    public String saveAuthor(@RequestParam("bookId") int id, @ModelAttribute("author") Author author) {
-
-        //TO-DO
-        libraryService.save(author);
-
-        return "redirect:/library/authorsList";
-    }
-
     @GetMapping("/updateAuthorForm")
     public String updateAuthor(@RequestParam("authorId") int id, Model model) {
 
         Author author = libraryService.findAuthorById(id);
-
         model.addAttribute("author", author);
 
         return "library/author-add-form";
@@ -104,8 +90,7 @@ public class AdminLibraryController {
     @GetMapping("/manageAuthors")
     public String listAuthors(@RequestParam("bookId") int id, Model model) {
 
-        List<Author> authors = libraryService.findAuthorsByBookId(id);
-
+        List<Author> authors = libraryService.findAuthorsAndBookByBookId(id);
         model.addAttribute("authors", authors);
 
         return "library/list-authors-for-book";

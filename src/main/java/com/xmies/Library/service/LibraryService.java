@@ -10,7 +10,9 @@ public interface LibraryService {
 
     List<Author> findAllAuthors();
 
-    List<Author> findAuthorsByBookId(int id);
+    List<Author> findAuthorsAndBookByBookId(int id);
+
+    Book findBookAndAuthorsByBookId(int id);
 
     Author findAuthorById(int id);
 

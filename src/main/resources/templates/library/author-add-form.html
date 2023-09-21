@@ -18,6 +18,15 @@
 
     <input type="hidden" th:field="*{id}">
 
+    <!-- its handling connection between author and book in update, need to send all the properties if we decide on CascadeType=PERSIST -->
+
+    <div hidden="hidden" th:each="book, itemStat : *{books}">
+
+      <input type="hidden" th:field="*{books[__${itemStat.index}__].id}">
+
+    </div>
+
+
     <input type="text" th:field="*{firstName}"
            class="form-control mb-4 w-30" placeholder="First name">
 
