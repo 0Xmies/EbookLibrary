@@ -53,8 +53,11 @@ public class UserLibraryController {
     @GetMapping("/book-information")
     public String bookInformation(@RequestParam("bookId") int id, Model model) {
 
-        Book book = libraryService.findBookById(id);
+        Book book = libraryService.findBookAndAuthorsByBookId(id);
+
         model.addAttribute("book", book);
+        model.addAttribute("authors", book.getAuthors());
+
 
         return "library/book-info";
     }
