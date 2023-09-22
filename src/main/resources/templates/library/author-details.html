@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Author details</title>
+</head>
+<body>
+    <span class="fs-3 text-center">
+
+        <p class="fs-2 fw-bold" th:text="'More information about ' + ${author.firstName} + ' ' + ${author.lastName}"></p>
+
+
+        <p th:text="${author.firstName} + ' born ' + ${author.authorDetails.yearOfBirth} + ' in ' + ${author.authorDetails.countryOfOrigin} + ' and is a book writer!'"></p>
+
+        <p th:text="${author.firstName} + ' favorite hobby is ' + ${author.authorDetails.hobby}"></p>
+
+    </span>
+
+
+    <a  th:href="@{list}"
+        class="btn btn-primary mb-2">
+        Back to list
+    </a>
+
+    <br>
+
+    <a  th:href="@{~/admin/manageAuthorDetails(authorId=${author.id})}"
+        class="btn btn-primary mb-2">
+        Manage author details
+    </a>
+
+</div>
+</body>
+</html>

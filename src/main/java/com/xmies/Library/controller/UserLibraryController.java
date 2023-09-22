@@ -1,10 +1,10 @@
 package com.xmies.Library.controller;
 
 import com.xmies.Library.entity.Author;
+import com.xmies.Library.entity.AuthorDetails;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,5 +60,15 @@ public class UserLibraryController {
 
 
         return "library/book-info";
+    }
+
+    @GetMapping("/seeAuthorDetails")
+    public String seeAuthorDetails(@RequestParam("authorId") int id, Model model) {
+
+        Author author = libraryService.findAuthorAndAuthorDetailById(id);
+
+        model.addAttribute("author", author);
+
+        return "library/author-details";
     }
 }

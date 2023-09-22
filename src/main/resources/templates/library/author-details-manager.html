@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+  <title>Book info</title>
+</head>
+<body>
+    <div class="container">
+      <span class="fs-1 fw-bold p-3">
+
+        <span> Manage author details about: </span>
+        <span th:text="${author.firstName} + ' ' + ${author.lastName} "></span>
+
+      </span>
+
+      <hr>
+      <div class="container p-4">
+        <span class="fs-3 fst-italic">
+
+          <p th:text="'Country: ' + ${author.authorDetails == null ? 'not filled yet' : author.authorDetails.countryOfOrigin}"></p>
+          <p th:text="'Hobby: ' + ${author.authorDetails == null ? 'not filled yet' : author.authorDetails.hobby}"></p>
+          <p th:text="'Birth year: ' + ${author.authorDetails == null ? 'not filled yet' : author.authorDetails.yearOfBirth}"></p>
+
+        </span>
+      </div>
+
+      <hr>
+
+      <a th:href="@{~/library/seeAuthorDetails(authorId=${author.id})}"
+         class="btn btn-primary mb-2">
+        Back to list
+      </a>
+
+      <a th:href="@{updateAuthorDetails(authorId=${author.id})}"
+         class="btn btn-primary mb-2">
+        add/update author details
+      </a>
+
+
+
+    </div>
+</body>
+</html>

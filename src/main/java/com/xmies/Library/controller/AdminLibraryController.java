@@ -1,6 +1,7 @@
 package com.xmies.Library.controller;
 
 import com.xmies.Library.entity.Author;
+import com.xmies.Library.entity.AuthorDetails;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.service.LibraryService;
 import org.springframework.stereotype.Controller;
@@ -123,6 +124,23 @@ public class AdminLibraryController {
         model.addAttribute("author", author);
 
         return "library/author-details-manager";
+    }
+
+    @GetMapping("updateAuthorDetails")
+    public String updateAuthorDetails(@RequestParam("authorId") int id, Model model) {
+
+        Author author = libraryService.findAuthorById(id);
+        model.addAttribute("author", author);
+
+        return "library/author-details-add-form";
+    }
+
+    @PostMapping("saveAuthorDetails")
+    public String saveAuthorDetails(@ModelAttribute("author") Author author) {
+
+        libraryService.save(author);
+
+        return "redirect:/library/seeAuthorDetails?authorId=" + author.getId();
     }
 
 }

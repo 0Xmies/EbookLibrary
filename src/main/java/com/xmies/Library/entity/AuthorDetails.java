@@ -3,8 +3,8 @@ package com.xmies.Library.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "author_detail")
-public class AuthorDetail {
+@Table(name = "author_details")
+public class AuthorDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,19 +18,18 @@ public class AuthorDetail {
     private String hobby;
 
     @Column(name = "year_of_birth")
-    private int year_of_birth;
+    private int yearOfBirth;
 
-    @OneToOne(mappedBy = "authorDetail",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "authorDetails",cascade = CascadeType.ALL)
     private Author author;
 
-    public AuthorDetail() {
+    public AuthorDetails() {
     }
 
-    public AuthorDetail(String countryOfOrigin, String hobby, int year_of_birth, Author author) {
+    public AuthorDetails(String countryOfOrigin, String hobby, int yearOfBirth) {
         this.countryOfOrigin = countryOfOrigin;
         this.hobby = hobby;
-        this.year_of_birth = year_of_birth;
-        this.author = author;
+        this.yearOfBirth = yearOfBirth;
     }
 
     public int getId() {
@@ -57,12 +56,12 @@ public class AuthorDetail {
         this.hobby = hobby;
     }
 
-    public int getYear_of_birth() {
-        return year_of_birth;
+    public int getYearOfBirth() {
+        return yearOfBirth;
     }
 
-    public void setYear_of_birth(int year_of_birth) {
-        this.year_of_birth = year_of_birth;
+    public void setYearOfBirth(int yearOfBirth) {
+        this.yearOfBirth = yearOfBirth;
     }
 
     public Author getAuthor() {
@@ -79,7 +78,7 @@ public class AuthorDetail {
                 "id=" + id +
                 ", countryOfOrigin='" + countryOfOrigin + '\'' +
                 ", hobby='" + hobby + '\'' +
-                ", year_of_birth=" + year_of_birth +
+                ", year_of_birth=" + yearOfBirth +
                 ", author name =" + author.getFirstName() + " " + author.getLastName() +
                 '}';
     }

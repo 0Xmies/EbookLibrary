@@ -1,14 +1,13 @@
 package com.xmies.Library.service;
 
 import com.xmies.Library.entity.Author;
-import com.xmies.Library.entity.AuthorDetail;
+import com.xmies.Library.entity.AuthorDetails;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.entity.Review;
-import com.xmies.Library.repository.AuthorDetailRepository;
+import com.xmies.Library.repository.AuthorDetailsRepository;
 import com.xmies.Library.repository.AuthorRepository;
 import com.xmies.Library.repository.BookRepository;
 import com.xmies.Library.repository.ReviewRepository;
-import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,43 +18,54 @@ import java.util.Optional;
 public class LibraryServiceImpl implements LibraryService {
 
     private AuthorRepository authorRepository;
-    private AuthorDetailRepository authorDetailRepository;
+    private AuthorDetailsRepository authorDetailsRepository;
     private BookRepository bookRepository;
     private ReviewRepository reviewRepository;
 
     @Autowired
     public LibraryServiceImpl(AuthorRepository authorRepository, BookRepository bookRepository,
-                              ReviewRepository reviewRepository, AuthorDetailRepository authorDetailRepository) {
+                              ReviewRepository reviewRepository, AuthorDetailsRepository authorDetailsRepository) {
 
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.reviewRepository = reviewRepository;
-        this.authorDetailRepository = authorDetailRepository;
+        this.authorDetailsRepository = authorDetailsRepository;
     }
 
     @Override
-    public AuthorDetail findAuthorDetail(int id) {
+    public AuthorDetails findAuthorDetails(int id) {
 
-        Optional<AuthorDetail> result = authorDetailRepository.findById(id);
-        AuthorDetail authorDetail;
+        Optional<AuthorDetails> result = authorDetailsRepository.findById(id);
+        AuthorDetails authorDetails;
 
         if (result.isPresent()) {
-            authorDetail = result.get();
+            authorDetails = result.get();
         } else {
             throw new RuntimeException("Did not find authorDetails id = " + id);
         }
 
-        return authorDetail;
+        return authorDetails;
     }
 
     @Override
-    public void save(AuthorDetail authorDetail) {
-        authorDetailRepository.save(authorDetail);
+    public void save(AuthorDetails authorDetails) {
+        authorDetailsRepository.save(authorDetails);
     }
 
     @Override
-    public void deleteAuthorDetailById(int id) {
-        authorDetailRepository.deleteById(id);
+    public void deleteAuthorDetailsById(int id) {
+        authorDetailsRepository.deleteById(id);
+    }
+
+    @Override
+    public Author findAuthorAndAuthorDetailById(int id) {
+
+        Author author = this.findAuthorById(id);
+
+        if (author.getAuthorDetails() == null) {
+            author.setAuthorDetails(this.getBlankAuthorDetails());
+        }
+        return author;
     }
 
     @Override
@@ -170,6 +180,10 @@ public class LibraryServiceImpl implements LibraryService {
 
         author.addBook(book);
         authorRepository.save(author);
+    }
+
+    private AuthorDetails getBlankAuthorDetails() {
+        return new AuthorDetails("Not known", "Not known", 0);
     }
 
 }

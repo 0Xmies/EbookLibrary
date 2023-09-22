@@ -30,6 +30,11 @@
             <td th:text="${author.firstName}"/>
             <td th:text="${author.lastName}"/>
             <td>
+                <a th:href="@{~/library/seeAuthorDetails(authorId=${author.id})}"
+                   class="btn btn-primary me-5">
+                    See author details
+                </a>
+
                 <a  th:href="@{~/admin/updateAuthorForm(authorId=${author.id})}"
                     class="btn btn-info">
                     Update Author

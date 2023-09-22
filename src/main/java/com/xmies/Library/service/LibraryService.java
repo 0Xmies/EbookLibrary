@@ -1,7 +1,7 @@
 package com.xmies.Library.service;
 
 import com.xmies.Library.entity.Author;
-import com.xmies.Library.entity.AuthorDetail;
+import com.xmies.Library.entity.AuthorDetails;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.entity.Review;
 
@@ -9,11 +9,13 @@ import java.util.List;
 
 public interface LibraryService {
 
-    AuthorDetail findAuthorDetail(int id);
+    AuthorDetails findAuthorDetails(int id);
 
-    void save(AuthorDetail authorDetail);
+    void save(AuthorDetails authorDetails);
 
-    void deleteAuthorDetailById(int id);
+    void deleteAuthorDetailsById(int id);
+
+    Author findAuthorAndAuthorDetailById(int id);
 
     List<Author> findAllAuthors();
 

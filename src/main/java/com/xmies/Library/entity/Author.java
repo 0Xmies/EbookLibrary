@@ -21,8 +21,8 @@ public class Author {
     private String lastName;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "author_detail_id")
-    private AuthorDetail authorDetail;
+    @JoinColumn(name = "author_details_id")
+    private AuthorDetails authorDetails;
 
     @ManyToMany(cascade = {CascadeType.REMOVE})
     @JoinTable(
@@ -32,12 +32,12 @@ public class Author {
     )
     private List<Book> books;
 
-    public AuthorDetail getAuthorDetail() {
-        return authorDetail;
+    public AuthorDetails getAuthorDetails() {
+        return authorDetails;
     }
 
-    public void setAuthorDetail(AuthorDetail authorDetail) {
-        this.authorDetail = authorDetail;
+    public void setAuthorDetails(AuthorDetails authorDetails) {
+        this.authorDetails = authorDetails;
     }
 
     public List<Book> getBooks() {
