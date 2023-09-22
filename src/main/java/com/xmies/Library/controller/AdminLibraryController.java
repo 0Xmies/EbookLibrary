@@ -109,12 +109,22 @@ public class AdminLibraryController {
     }
 
     @GetMapping("bindAuthorToBook")
-    public String bindAuthorToBook(@RequestParam("authorId") int authorId, @RequestParam("bookId") int bookId) {
+    public String bindAuthorToBook(@RequestParam("authorId") int id, @RequestParam("bookId") int bookId) {
 
-        libraryService.bindAuthorToBook(authorId, bookId);
+        libraryService.bindAuthorToBook(id, bookId);
 
         return "redirect:/library/menu";
     }
+
+    @GetMapping("manageAuthorDetails")
+    public String manageAuthorDetails(@RequestParam("authorId") int id, Model model) {
+
+        Author author = libraryService.findAuthorById(id);
+        model.addAttribute("author", author);
+
+        return "library/author-details-manager";
+    }
+
 }
 
 
