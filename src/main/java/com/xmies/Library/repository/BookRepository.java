@@ -11,7 +11,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findAllByOrderByTitleAsc();
 
     @Query("Select b FROM Book b " +
-            "JOIN FETCH b.authors a " +
+            "LEFT JOIN FETCH b.authors a " +
             "WHERE b.id = ?1")
     Book findBookAndAuthorsByBookId(int id);
 }
