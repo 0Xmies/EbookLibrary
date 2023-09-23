@@ -20,7 +20,7 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<Review> reviews;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany()
     @JoinTable(
             name = "book_author",
             joinColumns = @JoinColumn(name = "book_id"),

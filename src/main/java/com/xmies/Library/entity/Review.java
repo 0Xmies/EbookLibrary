@@ -17,7 +17,7 @@ public class Review {
     @Column(name = "comment")
     private String comment;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne()
     @JoinColumn(name = "book_id")
     private com.xmies.Library.entity.Book book;
 
