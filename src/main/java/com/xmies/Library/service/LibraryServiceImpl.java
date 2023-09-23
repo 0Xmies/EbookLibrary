@@ -178,12 +178,27 @@ public class LibraryServiceImpl implements LibraryService {
         Author author = this.findAuthorById(authorId);
         Book book = findBookById(bookId);
 
+        if (isAlreadyAnAuthor(author, book)) {
+            return;
+        }
+
         author.addBook(book);
         authorRepository.save(author);
     }
 
     private AuthorDetails getBlankAuthorDetails() {
         return new AuthorDetails("Not known", "Not known", 0);
+    }
+
+    private boolean isAlreadyAnAuthor(Author author, Book book) {
+
+        for (Book b : author.getBooks()) {
+            if (b == book) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
