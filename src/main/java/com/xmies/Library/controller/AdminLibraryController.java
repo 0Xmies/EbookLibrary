@@ -3,6 +3,7 @@ package com.xmies.Library.controller;
 import com.xmies.Library.entity.Author;
 import com.xmies.Library.entity.AuthorDetails;
 import com.xmies.Library.entity.Book;
+import com.xmies.Library.entity.Review;
 import com.xmies.Library.service.LibraryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -141,6 +142,24 @@ public class AdminLibraryController {
         libraryService.save(author);
 
         return "redirect:/library/seeAuthorDetails?authorId=" + author.getId();
+    }
+
+    @GetMapping("reviewUpdateForm")
+    public String reviewUpdateForm(@RequestParam("bookId") int bookId, @RequestParam("reviewId") int id, Model model) {
+
+        Review review = libraryService.findReviewById(id);
+
+        model.addAttribute("review", review);
+
+        return "library/review-add-form";
+    }
+
+    @GetMapping("deleteReview")
+    public String deleteReview(@RequestParam("bookId") int bookId, @RequestParam("reviewId") int id) {
+
+        libraryService.deleteReviewById(id);
+
+        return "redirect:/library/book-information?bookId=" + bookId;
     }
 
 }

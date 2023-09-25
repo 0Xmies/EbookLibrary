@@ -3,13 +3,13 @@ package com.xmies.Library.controller;
 import com.xmies.Library.entity.Author;
 import com.xmies.Library.entity.AuthorDetails;
 import com.xmies.Library.entity.Book;
+import com.xmies.Library.entity.Review;
 import com.xmies.Library.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -54,6 +54,9 @@ public class UserLibraryController {
     public String bookInformation(@RequestParam("bookId") int id, Model model) {
 
         Book book = libraryService.findBookAndAuthorsByBookId(id);
+        List<Review> reviews = libraryService.findReviewsByBookId(id);
+
+        book.setReviews(reviews);
 
         model.addAttribute("book", book);
         model.addAttribute("authors", book.getAuthors());
@@ -70,5 +73,23 @@ public class UserLibraryController {
         model.addAttribute("author", author);
 
         return "library/author-details";
+    }
+
+    @GetMapping("/addReviewForm")
+    public String addReviewForm(@RequestParam("bookId") int id, Model model) {
+
+        Review review = new Review();
+        review.setBook(libraryService.findBookById(id));
+        model.addAttribute("review", review);
+
+        return "library/review-add-form";
+    }
+
+    @PostMapping("/saveReview")
+    public String saveReview(@ModelAttribute("review") Review review, @RequestParam int id) {
+
+        libraryService.save(review);
+
+        return "redirect:/library/book-information?bookId=" + review.getBook().getId();
     }
 }

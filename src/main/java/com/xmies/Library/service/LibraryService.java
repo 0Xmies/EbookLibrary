@@ -47,4 +47,7 @@ public interface LibraryService {
 
     void bindAuthorToBook(int authorId, int bookId);
 
+    Book findBookAndReviewsByBookId(int id);
+
+    List<Review> findReviewsByBookId(int id);
 }

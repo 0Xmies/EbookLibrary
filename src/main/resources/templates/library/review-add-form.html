@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+  <title>Save Author Details</title>
+</head>
+<body>
+
+<div class="container">
+  <h2>Author details form</h2>
+  <hr>
+
+  <form action="#" th:action="@{~/library/saveReview}"
+        th:object="${review}" method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+    <input type="text" th:field="*{rating}"
+           class="form-control mb-4 w-30" placeholder="rating">
+
+    <input type="text" th:field="*{comment}"
+           class="form-control mb-4 w-30" placeholder="comment">
+
+    <input type="hidden" th:field="*{book.id}">
+
+    <button type="submit"
+            class="btn btn-primary mb-2">Save</button>
+
+  </form>
+
+  <hr>
+
+  <a th:href="@{~/library/book-information(bookId=${param.bookId})}">Back to book information</a>
+</div>
+
+</body>
+</html>

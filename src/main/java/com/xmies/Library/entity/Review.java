@@ -19,7 +19,7 @@ public class Review {
 
     @ManyToOne()
     @JoinColumn(name = "book_id")
-    private com.xmies.Library.entity.Book book;
+    private Book book;
 
     public Review() {
     }
@@ -59,6 +59,7 @@ public class Review {
     }
 
     public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override

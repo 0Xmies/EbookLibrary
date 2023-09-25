@@ -186,6 +186,19 @@ public class LibraryServiceImpl implements LibraryService {
         authorRepository.save(author);
     }
 
+    @Override
+    public Book findBookAndReviewsByBookId(int id) {
+
+        Book book = bookRepository.findBookAndReviewsByBookId(id);
+
+        return book;
+    }
+
+    @Override
+    public List<Review> findReviewsByBookId(int id) {
+        return reviewRepository.findReviewsByBookId(id);
+    }
+
     private AuthorDetails getBlankAuthorDetails() {
         return new AuthorDetails("Not known", "Not known", 0);
     }
@@ -200,5 +213,4 @@ public class LibraryServiceImpl implements LibraryService {
 
         return false;
     }
-
 }

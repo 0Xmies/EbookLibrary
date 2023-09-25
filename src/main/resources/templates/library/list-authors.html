@@ -35,6 +35,11 @@
       <td th:text="${author.firstName}"/>
       <td th:text="${author.lastName}"/>
       <td>
+        <a  th:href="@{seeAuthorDetails(authorId=${author.id})}"
+            class="btn btn-info me-5">
+            See author details
+        </a>
+
         <a  th:href="@{~/admin/updateAuthorForm(authorId=${author.id})}"
             class="btn btn-info">
             Update Author
@@ -51,8 +56,6 @@
             onclick="if (!(confirm('Are you sure you want to bind book to this author?'))) return false">
             Bind book
         </a>
-
-
 
       </td>
     </tr>
