@@ -13,14 +13,14 @@
         <p class="fs-2 fw-bold" th:text="'More information about ' + ${author.firstName} + ' ' + ${author.lastName}"></p>
 
 
-        <p th:text="${author.firstName} + ' born ' + ${author.authorDetails.yearOfBirth} + ' in ' + ${author.authorDetails.countryOfOrigin} + ' and is a book writer!'"></p>
+        <p th:text="${author.firstName} + ' (born ' + ${author.authorDetails.yearOfBirth} + ' in ' + ${author.authorDetails.countryOfOrigin} + ') is a great book writer!'"></p>
 
         <p th:text="${author.firstName} + ' favorite hobby is ' + ${author.authorDetails.hobby}"></p>
 
     </span>
 
 
-    <a  th:href="@{list}"
+    <a  th:href="@{/library/book-information(bookId=${param.bookId})}"
         class="btn btn-secondary mb-2">
         Back to list
     </a>

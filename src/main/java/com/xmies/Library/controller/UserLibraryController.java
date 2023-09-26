@@ -66,7 +66,7 @@ public class UserLibraryController {
     }
 
     @GetMapping("/seeAuthorDetails")
-    public String seeAuthorDetails(@RequestParam("authorId") int id, Model model) {
+    public String seeAuthorDetails(@RequestParam("bookId") int bookId, @RequestParam("authorId") int id, Model model) {
 
         Author author = libraryService.findAuthorAndAuthorDetailById(id);
 

@@ -39,7 +39,7 @@
           <td th:text="${author.lastName}"/>
 
           <td>
-            <a th:href="@{seeAuthorDetails(authorId=${author.id})}"
+            <a th:href="@{seeAuthorDetails(authorId=${author.id},bookId=${param.bookId})}"
                class="btn btn-info">
               See author details
             </a>
