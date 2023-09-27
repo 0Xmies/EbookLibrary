@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+  <title>Registration successful Page</title>
+</head>
+<body>
+
+  <div class="container mt-5">
+
+    <h2>User registered successfully!</h2>
+
+    <ul class="h3">
+      <li th:text="'User name: ' + ${session.user.username}"></li>
+      <li th:text="'First name: ' + ${session.user.firstName}"></li>
+      <li th:text="'Last name: ' + ${session.user.lastName}"></li>
+    </ul>
+
+    <hr>
+
+    <a th:href="@{/entry/showLoginPage}" class="ls-2">Login with new username</a>
+
+  </div>
+
+</body>
+</html>

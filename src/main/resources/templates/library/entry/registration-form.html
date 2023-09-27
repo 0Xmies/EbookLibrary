@@ -17,20 +17,19 @@
         th:object="${libraryUser}"
         method="post" class="form-horizontal" >
 
-      <div th:if="${param.registrationError}">
+      <div th:if="${registrationError != null}">
 
         <div class="alert alert-danger px-4 py-2">
-          <span th:text="${param.registrationError}"></span>
+          <span th:text="${registrationError}"></span>
         </div>
 
     </div>
-
 
     <input type="text" th:field="*{username}" placeholder="Username (*)"
            class="form-control mb-2" />
 
     <div th:if="${#fields.hasErrors('username')}">
-      <li th:each="error : ${#fields.hasErrors('username')}" th:text="'Username - ' + ${error}"></li>
+      <p th:each="error : ${#fields.hasErrors('username')}" th:text="'Username - ' + ${error}"></p>
     </div>
 
 
@@ -57,10 +56,19 @@
       <li th:each="error : ${#fields.hasErrors('lastName')}" th:text="'Last name - ' + ${error}"></li>
     </div>
 
-
-    <button type="submit" class="btn btn-primary btn-lg">Register</button>
+    <button type="submit" class="btn btn-primary btn-lg mb-2">Register</button>
 
   </form>
+
+  <a  th:href="@{/entry/loginUserForm}"
+      class="btn btn-secondary">
+     To login form
+  </a>
+
+  <a  th:href="@{/library/menu}"
+      class="btn btn-secondary">
+    To library menu
+  </a>
 
   </div>
 

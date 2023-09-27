@@ -41,7 +41,7 @@ public class AdminLibraryController {
     @GetMapping("/updateBookForm")
     public String updateBook(@RequestParam("bookId") int id, Model model) {
 
-        Book book = libraryService.findBookById(id);
+        Book book = libraryService.findBookAndAuthorsByBookId(id);
         model.addAttribute("book", book);
 
         return "library/book-add-form";

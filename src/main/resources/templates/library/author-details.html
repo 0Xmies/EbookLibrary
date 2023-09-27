@@ -8,29 +8,37 @@
     <title>Author details</title>
 </head>
 <body>
-    <span class="fs-3 text-center">
 
-        <p class="fs-2 fw-bold" th:text="'More information about ' + ${author.firstName} + ' ' + ${author.lastName}"></p>
+<div th:if="${session.user}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
+  <span th:text="'Username: ' + ${session.user.username}"></span> <br>
+  <span th:text="'First name: ' + ${session.user.firstName}"></span> <br>
+  <span th:text="'Last name: ' + ${session.user.lastName}"></span>
+</div>
+
+<div class="container mt-5">
+
+  <span class="fs-3 text-center">
+
+  <p class="fs-2 fw-bold" th:text="'More information about ' + ${author.firstName} + ' ' + ${author.lastName}"></p>
+
+  <p th:text="${author.firstName} + ' (born ' + ${author.authorDetails.yearOfBirth} + ' in ' + ${author.authorDetails.countryOfOrigin} + ') is a great book writer!'"></p>
+
+  <p th:text="${author.firstName} + ' favorite hobby is ' + ${author.authorDetails.hobby}"></p>
+
+  </span>
 
 
-        <p th:text="${author.firstName} + ' (born ' + ${author.authorDetails.yearOfBirth} + ' in ' + ${author.authorDetails.countryOfOrigin} + ') is a great book writer!'"></p>
+  <a  th:href="@{/library/list}"
+    class="btn btn-secondary mb-2">
+    Back to list
+  </a>
 
-        <p th:text="${author.firstName} + ' favorite hobby is ' + ${author.authorDetails.hobby}"></p>
+  <br>
 
-    </span>
-
-
-    <a  th:href="@{/library/book-information(bookId=${param.bookId})}"
-        class="btn btn-secondary mb-2">
-        Back to list
-    </a>
-
-    <br>
-
-    <a  th:href="@{~/admin/manageAuthorDetails(authorId=${author.id})}"
+  <a  th:href="@{~/admin/manageAuthorDetails(authorId=${author.id})}"
         class="btn btn-primary mb-2">
         Manage author details
-    </a>
+  </a>
 
 </div>
 </body>

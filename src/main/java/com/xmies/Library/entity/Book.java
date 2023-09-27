@@ -19,7 +19,7 @@ public class Book {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(cascade = CascadeType.REMOVE,mappedBy = "book")
     private List<Review> reviews;
 
     @ManyToMany()

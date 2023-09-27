@@ -1,12 +1,17 @@
 package com.xmies.Library.controller;
 
 import com.xmies.Library.entity.Author;
-import com.xmies.Library.entity.AuthorDetails;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.entity.Review;
+import com.xmies.Library.entity.userRelated.User;
 import com.xmies.Library.service.LibraryService;
+import com.xmies.Library.service.userRelated.UserService;
+import com.xmies.Library.user.LibraryUser;
+import jakarta.servlet.http.HttpSession;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +24,38 @@ public class UserLibraryController {
 
     private LibraryService libraryService;
 
+    private UserService userService;
+
     @Autowired
-    public UserLibraryController(LibraryService libraryService) {
+    public UserLibraryController(LibraryService libraryService, UserService userService) {
         this.libraryService = libraryService;
+        this.userService = userService;
     }
 
     @GetMapping("/menu")
-    public String menu() {
+    public String menu(HttpSession session) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal == null) {
+            return "library/menu";
+        }
+
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+            User user = userService.findByUserName(username);
+
+        if (user != null) {
+            LibraryUser libraryUser = new LibraryUser(user);
+            session.setAttribute("user", libraryUser);
+        }
+
 
         return "library/menu";
     }
@@ -66,7 +96,7 @@ public class UserLibraryController {
     }
 
     @GetMapping("/seeAuthorDetails")
-    public String seeAuthorDetails(@RequestParam("bookId") int bookId, @RequestParam("authorId") int id, Model model) {
+    public String seeAuthorDetails(@RequestParam("authorId") int id, Model model) {
 
         Author author = libraryService.findAuthorAndAuthorDetailById(id);
 

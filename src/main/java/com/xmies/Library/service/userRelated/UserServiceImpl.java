@@ -22,13 +22,13 @@ public class UserServiceImpl implements UserService {
 
     private RoleRepository roleRepository;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -42,11 +42,12 @@ public class UserServiceImpl implements UserService {
         User user = new User();
 
         user.setUsername(libraryUser.getUsername());
-        user.setPassword(libraryUser.getPassword());
+        user.setPassword(passwordEncoder.encode(libraryUser.getPassword()));
+        user.setEnabled(true);
         user.setFirstName(libraryUser.getFirstName());
         user.setLastName(libraryUser.getLastName());
 
-        user.addRole(new Role("ROLE_USER"));
+        user.addRole(roleRepository.findRoleByName("ROLE_USER"));
 
         userRepository.save(user);
     }

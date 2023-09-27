@@ -10,7 +10,13 @@
 </head>
 <body>
 
-<div class="container">
+<div th:if="${session.user}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
+  <span th:text="'Username: ' + ${session.user.username}"></span> <br>
+  <span th:text="'First name: ' + ${session.user.firstName}"></span> <br>
+  <span th:text="'Last name: ' + ${session.user.lastName}"></span>
+</div>
+
+<div class="container mt-5">
 
   <h2>All authors in our database</h2>
   <hr>
