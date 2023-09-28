@@ -5,10 +5,17 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-  <title>Book info</title>
+  <title>Book information</title>
 </head>
 <body>
 
+<div th:if="${session.user}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
+  <span th:text="'Username: ' + ${session.user.username}"></span> <br>
+  <span th:text="'First name: ' + ${session.user.firstName}"></span> <br>
+  <span th:text="'Last name: ' + ${session.user.lastName}"></span>
+</div>
+
+<div class="container mt-5">
   <div th:each="tempBook : ${book}" class="container">
 
     <span class="fs-1 fw-bold">
@@ -18,31 +25,74 @@
 
     </span>
 
-    <span class="fs-3">
-
-
-
-    </span>
-
     <hr>
     <p th:text="${book.title}" class="fs-2 fw-bold"></p>
 
-    <a th:href="@{list}" class="btn btn-primary mb-2"> Back to list</a>
+    <p class="fs-4"> Was created by: </p>
+
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr th:each="author : ${authors}">
+
+          <td th:text="${author.firstName}"/>
+          <td th:text="${author.lastName}"/>
+
+          <td>
+            <a th:href="@{seeAuthorDetails(authorId=${author.id})}"
+               class="btn btn-info">
+              See author details
+            </a>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+
+    <a th:href="@{list}"
+       class="btn btn-secondary mb-2">
+      Back to list
+    </a>
     <br>
 
-    <a th:href="@{addReview}" class="btn btn-primary mb-2"> Add review </a>
-    <a th:href="@{seeReviews}" class="btn btn-primary mb-2"> See reviews </a>
-    <a th:href="@{~/admin/updateReview}" class="btn btn-info mb-2"> Update review </a>
-    <a th:href="@{~/admin/deleteReview}" class="btn btn-danger mb-2"> Delete review </a>
-    <br>
+    <a th:href="@{~/admin/manageAuthors(bookId=${book.id})}" class="btn btn-warning btn-lg mb-2"> Manage Authors </a>
+    <hr>
 
-    <a th:href="@{~/admin/manageAuthors(bookId=${book.id})}" class="btn btn-primary mb-2"> Manage Authors </a>
-    <br>
+    <div class="fs-4 fw-bold">
+      <h1> Reviews: </h1>
+      <a th:href="@{addReviewForm(bookId=${tempBook.id})}" class="btn btn-primary mb-2"> Add review </a>
 
-    <a th:href="@{~/admin/addAuthorDetailForm}" class="btn btn-primary mb-2"> Add author details </a>
-    <a th:href="@{~/admin/updateAuthorDetail}" class="btn btn-info mb-2"> Update author details</a>
-    <a th:href="@{~/admin/deleteAuthorDetail}" class="btn btn-danger mb-2"> Delete author details</a>
+      <hr>
+
+      <div th:each="review : ${book.reviews}">
+
+        <p th:text="'Rating: ' + ${review.rating}"></p>
+
+        <span th:text="'Opinion: '"></span> <p class="fst-italic fw-light text-break" th:text="${review.comment}"></p>
+
+        <a th:href="@{~/admin/reviewUpdateForm(reviewId=${review.id}, bookId=${book.id})}"
+           class="btn btn-info">
+          Update review
+        </a>
+
+        <a th:href="@{~/admin/deleteReview(reviewId=${review.id}, bookId=${book.id})}"
+           class="btn btn-danger">
+          Delete review
+        </a>
+
+        <hr>
+      </div>
+    </div>
 
   </div>
+
+</div>
 </body>
 </html>

@@ -10,7 +10,13 @@
 </head>
 <body>
 
-<div class="container">
+<div th:if="${session.user}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
+  <span th:text="'Username: ' + ${session.user.username}"></span> <br>
+  <span th:text="'First name: ' + ${session.user.firstName}"></span> <br>
+  <span th:text="'Last name: ' + ${session.user.lastName}"></span>
+</div>
+
+<div class="container mt-5">
 
   <h2>Welcome to E-Book Library!</h2>
   <br>
@@ -18,14 +24,33 @@
   <hr>
 
   <a th:href="@{list}"
-     class="btn btn-lg btn-primary ms-5">
+     class="btn btn-lg btn-secondary ms-5">
     Books
   </a>
 
   <a th:href="@{authorsList}"
-     class="btn btn-lg btn-primary ms-5">
+     class="btn btn-lg btn-secondary ms-5">
     Authors
   </a>
+  <br>
+
+  <a th:href="@{/entry/registerUserForm}"
+     class="btn btn-success btn-lg mt-3 ms-5">
+    Register
+  </a>
+
+  <a th:href="@{/entry/loginUserForm}"
+     class="btn btn-success btn-lg mt-3 ms-5">
+    Login
+  </a>
+  <hr>
+
+  <form action="#" th:action="@{/logout}"
+        method="POST">
+
+    <input type="submit" value="Logout" class="btn btn-danger btn-lg mt-1 ms-2"/>
+
+  </form>
 
 </div>
 

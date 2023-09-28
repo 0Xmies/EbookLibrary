@@ -1,6 +1,9 @@
 package com.xmies.Library.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +18,20 @@ public class Author {
     private int id;
 
     @Column(name = "first_name")
+    @NotNull(message = "is required")
+    @Size(min = 3, max = 128, message = "Firstname must be between 3 and 128 characters")
     private String firstName;
 
     @Column(name = "last_name")
+    @NotNull(message = "is required")
+    @Size(min = 3, max = 128, message = "Lastname must be between 3 and 128 characters")
     private String lastName;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "author_detail_id")
-    private AuthorDetail authorDetail;
+    @JoinColumn(name = "author_details_id")
+    private AuthorDetails authorDetails;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REMOVE})
     @JoinTable(
             name = "book_author",
             joinColumns = @JoinColumn(name = "author_id"),
@@ -32,12 +39,12 @@ public class Author {
     )
     private List<Book> books;
 
-    public AuthorDetail getAuthorDetail() {
-        return authorDetail;
+    public AuthorDetails getAuthorDetails() {
+        return authorDetails;
     }
 
-    public void setAuthorDetail(AuthorDetail authorDetail) {
-        this.authorDetail = authorDetail;
+    public void setAuthorDetails(AuthorDetails authorDetails) {
+        this.authorDetails = authorDetails;
     }
 
     public List<Book> getBooks() {

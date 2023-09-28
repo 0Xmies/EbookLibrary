@@ -2,61 +2,75 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
                 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-    <title>Library</title>
+  <title>Books list</title>
 </head>
 <body>
 
-<div class="container">
+<div th:if="${session.user}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
+  <span th:text="'Username: ' + ${session.user.username}"></span> <br>
+  <span th:text="'First name: ' + ${session.user.firstName}"></span> <br>
+  <span th:text="'Last name: ' + ${session.user.lastName}"></span>
+</div>
 
-    <h2>Available books</h2>
-    <hr>
+<div class="container mt-5">
 
-    <a th:href="@{~/admin/addBookForm}"
+  <h2>Available books</h2>
+  <hr>
+
+  <a th:href="@{~/admin/addBookForm}"
        class="btn btn-primary mb-2">
        Add Book
-    </a>
+  </a>
 
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr class="table-info">
-                <th>Title</th>
-                <th>See book details</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr class="table-info">
 
-        <tbody>
-            <tr th:each="book : ${books}">
+        <th>Title</th>
+        <th>See book details</th>
+        <th>Actions</th>
 
-                <td th:text="${book.title}"/>
-                <td>
-                    <a  th:href="@{book-information(bookId=${book.id})}"
-                        class="btn btn-info">
-                        Book details
-                    </a>
-                </td>
-                <td>
-                    <a  th:href="@{~/admin/updateBookForm(bookId=${book.id})}"
-                        class="btn btn-info">
-                        Update
-                    </a>
+        </tr>
+    </thead>
 
-                    <a  th:href="@{~/admin/deleteBook(bookId=${book.id})}"
-                        class="btn btn-danger"
-                        onclick="if (!(confirm('Are you sure you want to delete this book?'))) return false">
-                        Delete
-                    </a>
+    <tbody>
+      <tr th:each="book : ${books}">
 
-                </td>
-            </tr>
-        </tbody>
-     </table>
+         <td th:text="${book.title}"/>
+           <td>
 
-    <a th:href="@{~/library/menu}">Back to menu</a>
+             <a  th:href="@{book-information(bookId=${book.id})}"
+               class="btn btn-info">
+               Book details
+             </a>
+
+           </td>
+           <td>
+
+             <a  th:href="@{~/admin/updateBookForm(bookId=${book.id})}"
+                 class="btn btn-info">
+                 Update
+             </a>
+
+             <a  th:href="@{~/admin/deleteBook(bookId=${book.id})}"
+                 class="btn btn-danger"
+                 onclick="if (!(confirm('Are you sure you want to delete this book?'))) return false">
+                 Delete
+             </a>
+
+           </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <a  th:href="@{~/library/menu}"
+        class="btn btn-secondary">
+        Back to menu
+  </a>
 
 </div>
 

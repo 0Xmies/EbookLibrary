@@ -1,6 +1,7 @@
 package com.xmies.Library.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "review")
@@ -12,14 +13,18 @@ public class Review {
     private int id;
 
     @Column(name = "rating")
+    @Min(value = 0)
+    @Max(value = 10)
     private int rating;
 
     @Column(name = "comment")
+    @NotNull(message = "Cant be empty")
+    @Size(min = 1, max = 512, message = "Comment must be between 1 and 512 characters")
     private String comment;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne()
     @JoinColumn(name = "book_id")
-    private com.xmies.Library.entity.Book book;
+    private Book book;
 
     public Review() {
     }
@@ -59,6 +64,7 @@ public class Review {
     }
 
     public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override

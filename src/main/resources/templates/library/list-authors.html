@@ -6,11 +6,17 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-  <title>Library</title>
+  <title>Authors list</title>
 </head>
 <body>
 
-<div class="container">
+<div th:if="${session.user}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
+  <span th:text="'Username: ' + ${session.user.username}"></span> <br>
+  <span th:text="'First name: ' + ${session.user.firstName}"></span> <br>
+  <span th:text="'Last name: ' + ${session.user.lastName}"></span>
+</div>
+
+<div class="container mt-5">
 
   <h2>All authors in our database</h2>
   <hr>
@@ -35,6 +41,11 @@
       <td th:text="${author.firstName}"/>
       <td th:text="${author.lastName}"/>
       <td>
+        <a  th:href="@{seeAuthorDetails(authorId=${author.id})}"
+            class="btn btn-info me-5">
+            See author details
+        </a>
+
         <a  th:href="@{~/admin/updateAuthorForm(authorId=${author.id})}"
             class="btn btn-info">
             Update Author
@@ -52,14 +63,15 @@
             Bind book
         </a>
 
-
-
       </td>
     </tr>
     </tbody>
   </table>
 
-  <a th:href="@{~/library/menu}">Back to menu</a>
+  <a  th:href="@{~/library/menu}"
+      class="btn btn-secondary">
+    Back to menu
+  </a>
 
 </div>
 
