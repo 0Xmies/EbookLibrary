@@ -27,10 +27,16 @@
     <input type="number" min="1" max="10" th:field="*{rating}"
            class="form-control mb-4 w-30" placeholder="rating">
 
+    <div th:if="${#fields.hasErrors('rating')}" class="text-danger">
+      <ul>
+        <li th:text="'Please provide a value'"></li>
+      </ul>
+    </div>
+
     <input type="text" th:field="*{comment}"
            class="form-control mb-4 w-30" placeholder="comment">
 
-    <div th:if="${#fields.hasErrors('comment')}">
+    <div th:if="${#fields.hasErrors('comment')}" class="text-danger"
       <ul>
         <li th:each="error : ${#fields.errors('comment')}" th:text="'Comment - ' + ${error}"></li>
       </ul>

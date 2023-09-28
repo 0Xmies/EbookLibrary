@@ -27,7 +27,7 @@
     <input type="text" th:field="*{countryOfOrigin}"
            class="form-control mb-4 w-30" placeholder="Country">
 
-    <div th:if="${#fields.hasErrors('countryOfOrigin')}">
+    <div th:if="${#fields.hasErrors('countryOfOrigin')}" class="text-danger">
       <ul>
         <li th:each="error : ${#fields.errors('countryOfOrigin')}" th:text="'Country - ' + ${error}"></li>
       </ul>
@@ -36,7 +36,7 @@
     <input type="text" th:field="*{hobby}"
            class="form-control mb-4 w-30" placeholder="Hobby">
 
-    <div th:if="${#fields.hasErrors('hobby')}">
+    <div th:if="${#fields.hasErrors('hobby')}" class="text-danger">
       <ul>
         <li th:each="error : ${#fields.errors('hobby')}" th:text="'Hobby - ' + ${error}"></li>
       </ul>
@@ -45,7 +45,7 @@
     <input type="number" min="0" max="3000" th:field="*{yearOfBirth}"
            class="form-control mb-4 w-30" placeholder="Birth year">
 
-    <div th:if="${#fields.hasErrors('yearOfBirth')}">
+    <div th:if="${#fields.hasErrors('yearOfBirth')}" class="text-danger">
       <ul>
         <li th:text="'Please provide a value'"></li>
       </ul>
