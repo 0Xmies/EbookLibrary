@@ -130,13 +130,11 @@ public class UserLibraryController {
     @PostMapping("/saveReview")
     public String saveReview(@Valid @ModelAttribute("review") Review review,
                              BindingResult bindingResult,
+                             Model model,
                              @RequestParam int id) {
 
-        if (review.getRating() == 0) {
-            System.out.println("dziala");
-        }
-
         if (bindingResult.hasErrors()) {
+            model.addAttribute("bookIdToBack", review.getBook().getId());
             return "library/review-add-form";
         }
 

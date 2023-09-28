@@ -36,7 +36,7 @@
     <input type="text" th:field="*{comment}"
            class="form-control mb-4 w-30" placeholder="comment">
 
-    <div th:if="${#fields.hasErrors('comment')}" class="text-danger"
+    <div th:if="${#fields.hasErrors('comment')}" class="text-danger">
       <ul>
         <li th:each="error : ${#fields.errors('comment')}" th:text="'Comment - ' + ${error}"></li>
       </ul>
@@ -50,11 +50,19 @@
   </form>
 
   <hr>
+  <div th:if="${param.bookId}">
+    <a th:href="@{~/library/book-information(bookId=${param.bookId})}"
+       class="btn btn-secondary">
+      Back to book information
+    </a>
+  </div>
 
-  <a th:href="@{~/library/book-information(bookId=${param.bookId})}"
-     class="btn btn-secondary">
-    Back to book information
-  </a>
+  <div th:if="!(${param.bookId})">
+    <a th:href="@{~/library/book-information(bookId=${bookIdToBack})}"
+       class="btn btn-secondary">
+      Back to book information
+    </a>
+  </div>
 
 </div>
 
