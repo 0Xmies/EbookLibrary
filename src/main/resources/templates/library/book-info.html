@@ -75,7 +75,7 @@
 
         <p th:text="'Rating: ' + ${review.rating}"></p>
 
-        <span th:text="'Opinion: '"></span> <p class="fst-italic fw-light" th:text="${review.comment}"></p>
+        <span th:text="'Opinion: '"></span> <p class="fst-italic fw-light text-break" th:text="${review.comment}"></p>
 
         <a th:href="@{~/admin/reviewUpdateForm(reviewId=${review.id}, bookId=${book.id})}"
            class="btn btn-info">

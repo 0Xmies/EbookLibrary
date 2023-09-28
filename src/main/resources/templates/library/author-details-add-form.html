@@ -19,37 +19,42 @@
   <h2>Author details form</h2>
   <hr>
 
-  <form action="#" th:action="@{saveAuthorDetails}"
-        th:object="${author}" method="post">
+  <form action="#" th:action="@{saveAuthorDetails(authorId=${param.authorId})}"
+        th:object="${authorDetails}" method="post">
 
     <input type="hidden" th:field="*{id}">
 
-    <input type="hidden" th:field="*{firstName}">
-
-    <input type="hidden" th:field="*{lastName}">
-
-    <div hidden="hidden" th:each="book, itemStat : *{books}">
-
-      <input type="hidden" th:field="*{books[__${itemStat.index}__].id}">
-
-    </div>
-
-    <input type="hidden" th:field="*{authorDetails.id}">
-
-    <input type="text" th:field="*{authorDetails.countryOfOrigin}"
+    <input type="text" th:field="*{countryOfOrigin}"
            class="form-control mb-4 w-30" placeholder="Country">
 
-    <input type="text" th:field="*{authorDetails.hobby}"
+    <div th:if="${#fields.hasErrors('countryOfOrigin')}">
+      <ul>
+        <li th:each="error : ${#fields.errors('countryOfOrigin')}" th:text="'Country - ' + ${error}"></li>
+      </ul>
+    </div>
+
+    <input type="text" th:field="*{hobby}"
            class="form-control mb-4 w-30" placeholder="Hobby">
 
-    <input type="text" th:field="*{authorDetails.yearOfBirth}"
+    <div th:if="${#fields.hasErrors('hobby')}">
+      <ul>
+        <li th:each="error : ${#fields.errors('hobby')}" th:text="'Hobby - ' + ${error}"></li>
+      </ul>
+    </div>
+
+    <input type="number" min="0" max="3000" th:field="*{yearOfBirth}"
            class="form-control mb-4 w-30" placeholder="Birth year">
+
+    <div th:if="${#fields.hasErrors('yearOfBirth')}">
+      <ul>
+        <li th:text="'Please provide a value'"></li>
+      </ul>
+    </div>
 
     <button type="submit"
             class="btn btn-primary mb-2">Save</button>
 
   </form>
-
   <hr>
 
   <a  th:href="@{~/library/list}"

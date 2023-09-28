@@ -1,6 +1,9 @@
 package com.xmies.Library.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +18,13 @@ public class Author {
     private int id;
 
     @Column(name = "first_name")
+    @NotNull(message = "is required")
+    @Size(min = 3, max = 128, message = "Firstname must be between 3 and 128 characters")
     private String firstName;
 
     @Column(name = "last_name")
+    @NotNull(message = "is required")
+    @Size(min = 3, max = 128, message = "Lastname must be between 3 and 128 characters")
     private String lastName;
 
     @OneToOne(cascade = CascadeType.ALL)

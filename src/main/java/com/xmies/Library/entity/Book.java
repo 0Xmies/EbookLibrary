@@ -1,6 +1,8 @@
 package com.xmies.Library.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -17,6 +19,8 @@ public class Book {
     private int id;
 
     @Column(name = "title")
+    @NotNull(message = "Cant be empty")
+    @Size(min = 1, max = 512, message = "Book title must be between 1 and 512 characters")
     private String title;
 
     @OneToMany(cascade = CascadeType.REMOVE,mappedBy = "book")

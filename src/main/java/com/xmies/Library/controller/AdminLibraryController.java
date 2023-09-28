@@ -5,8 +5,12 @@ import com.xmies.Library.entity.AuthorDetails;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.entity.Review;
 import com.xmies.Library.service.LibraryService;
+import jakarta.validation.Valid;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +25,14 @@ public class AdminLibraryController {
         this.libraryService = libraryService;
     }
 
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+
+        webDataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
     @GetMapping("/addBookForm")
     public String addBookForm(Model model) {
 
@@ -31,7 +43,12 @@ public class AdminLibraryController {
     }
 
     @PostMapping("/saveBook")
-    public String saveBook(@ModelAttribute("book") Book book) {
+    public String saveBook(@Valid @ModelAttribute("book") Book book,
+                           BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "library/book-add-form";
+        }
 
         libraryService.save(book);
 
@@ -65,7 +82,12 @@ public class AdminLibraryController {
     }
 
     @PostMapping("/saveAuthor")
-    public String saveAuthor(@ModelAttribute("author") Author author) {
+    public String saveAuthor(@Valid @ModelAttribute("author") Author author,
+                             BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "library/author-add-form";
+        }
 
         libraryService.save(author);
 
@@ -131,17 +153,25 @@ public class AdminLibraryController {
     public String updateAuthorDetails(@RequestParam("authorId") int id, Model model) {
 
         Author author = libraryService.findAuthorById(id);
-        model.addAttribute("author", author);
+        AuthorDetails authorDetails = author.getAuthorDetails();
+
+        model.addAttribute("authorDetails", authorDetails);
 
         return "library/author-details-add-form";
     }
 
     @PostMapping("saveAuthorDetails")
-    public String saveAuthorDetails(@ModelAttribute("author") Author author) {
+    public String saveAuthorDetails(@RequestParam("authorId") int id,
+                                    @Valid @ModelAttribute("authorDetails") AuthorDetails authorDetails,
+                                    BindingResult bindingResult) {
 
-        libraryService.save(author);
+        if (bindingResult.hasErrors()) {
+            return "library/author-details-add-form";
+        }
 
-        return "redirect:/library/seeAuthorDetails?authorId=" + author.getId();
+        libraryService.save(authorDetails);
+
+        return "redirect:/library/seeAuthorDetails?authorId=" + id;
     }
 
     @GetMapping("reviewUpdateForm")

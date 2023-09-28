@@ -1,6 +1,7 @@
 package com.xmies.Library.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "author_details")
@@ -12,12 +13,19 @@ public class AuthorDetails {
     private int id;
 
     @Column(name = "country_of_origin")
+    @NotNull(message = "is required")
+    @Size(min = 3, max = 128, message = "Country must be between 3 and 128 characters")
     private String countryOfOrigin;
 
     @Column(name = "hobby")
+    @NotNull(message = "is required")
+    @Size(min = 3, max = 64, message = "hobby must be between 3 and 64 characters")
     private String hobby;
 
     @Column(name = "year_of_birth")
+    @NotNull(message = "is required")
+    @Min(value = 0, message = "Min is 0" )
+    @Max(value = 3000, message = "Max is 3000")
     private int yearOfBirth;
 
     @OneToOne(mappedBy = "authorDetails",cascade = CascadeType.ALL)

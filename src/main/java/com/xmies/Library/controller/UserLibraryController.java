@@ -8,12 +8,16 @@ import com.xmies.Library.service.LibraryService;
 import com.xmies.Library.service.userRelated.UserService;
 import com.xmies.Library.user.LibraryUser;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +34,14 @@ public class UserLibraryController {
     public UserLibraryController(LibraryService libraryService, UserService userService) {
         this.libraryService = libraryService;
         this.userService = userService;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+
+        webDataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
     @GetMapping("/menu")
@@ -116,7 +128,17 @@ public class UserLibraryController {
     }
 
     @PostMapping("/saveReview")
-    public String saveReview(@ModelAttribute("review") Review review, @RequestParam int id) {
+    public String saveReview(@Valid @ModelAttribute("review") Review review,
+                             BindingResult bindingResult,
+                             @RequestParam int id) {
+
+        if (review.getRating() == 0) {
+            System.out.println("dziala");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "library/review-add-form";
+        }
 
         libraryService.save(review);
 

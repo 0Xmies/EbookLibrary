@@ -28,7 +28,7 @@
     <input type="text" th:field="*{username}" placeholder="Username (*)"
            class="form-control mb-2" />
 
-    <div th:if="${#fields.hasErrors('username')}">
+    <div th:if="${#fields.hasErrors('username')}" class="text-danger">
       <ul>
         <li th:each="error : ${#fields.errors('username')}" th:text="'Username - ' + ${error}"></li>
       </ul>
@@ -38,7 +38,7 @@
     <input type="text" th:field="*{password}" placeholder="Password (*)"
            class="form-control mb-2">
 
-    <div th:if="${#fields.hasErrors('password')}">
+    <div th:if="${#fields.hasErrors('password')}" class="text-danger">
       <ul>
         <li th:each="error : ${#fields.errors('password')}" th:text="'Password - ' + ${error}"></li>
       </ul>
@@ -48,16 +48,20 @@
     <input type="text" th:field="*{firstName}" placeholder="First name (*)"
            class="form-control mb-2">
 
-    <div th:if="${#fields.hasErrors('firstName')}">
-      <li th:each="err : ${#fields.errors('firstName')}" th:text="'First name - ' + ${err}"></li>
+    <div th:if="${#fields.hasErrors('firstName')}" class="text-danger">
+      <ul>
+        <li th:each="err : ${#fields.errors('firstName')}" th:text="'First name - ' + ${err}"></li>
+      </ul>
     </div>
 
 
     <input type="text" th:field="*{lastName}" placeholder="Last name (*)"
-           class="form-control mb-4">
+           class="form-control mb-2">
 
-    <div th:if="${#fields.hasErrors('lastName')}">
-      <li th:each="err : ${#fields.errors('lastName')}" th:text="'Last name - ' + ${err}"></li>
+    <div th:if="${#fields.hasErrors('lastName')}" class="text-danger">
+      <ul>
+       <li th:each="err : ${#fields.errors('lastName')}" th:text="'Last name - ' + ${err}"></li>
+      </ul>
     </div>
 
     <button type="submit" class="btn btn-primary btn-lg mb-2">Register</button>

@@ -36,8 +36,20 @@
     <input type="text" th:field="*{firstName}"
            class="form-control mb-4 w-30" placeholder="First name">
 
+    <div th:if="${#fields.hasErrors('firstName')}">
+      <ul>
+        <li th:each="error : ${#fields.errors('firstName')}" th:text="'First name - ' + ${error}"></li>
+      </ul>
+    </div>
+
     <input type="text" th:field="*{lastName}"
            class="form-control mb-4 w-30" placeholder="Last name">
+
+    <div th:if="${#fields.hasErrors('lastName')}">
+      <ul>
+        <li th:each="error : ${#fields.errors('lastName')}" th:text="'Last name - ' + ${error}"></li>
+      </ul>
+    </div>
 
     <button type="submit"
             class="btn btn-primary mb-2">Save</button>

@@ -33,6 +33,12 @@
     <input type="text" th:field="*{title}"
              class="form-control mb-4 w-30" placeholder="Title of the book">
 
+    <div th:if="${#fields.hasErrors('title')}">
+      <ul>
+        <li th:each="error : ${#fields.errors('title')}" th:text="'Title - ' + ${error}"></li>
+      </ul>
+    </div>
+
     <button type="submit"
               class="btn btn-primary mb-2">Save</button>
 

@@ -71,7 +71,6 @@ public class EntryController {
 
         String username = libraryUser.getUsername();
 
-        // check if username is taken
         if (bindingResult.hasErrors()) {
             return "library/entry/registration-form";
         }
