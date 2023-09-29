@@ -6,6 +6,11 @@ import jakarta.persistence.*;
 @Table(name = "statistics")
 public class Statistics {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
     @Column(name = "menu_entries")
     private int menuEntries;
 

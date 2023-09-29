@@ -5,6 +5,7 @@ import com.xmies.Library.entity.Book;
 import com.xmies.Library.entity.Review;
 import com.xmies.Library.entity.userRelated.User;
 import com.xmies.Library.service.LibraryService;
+import com.xmies.Library.service.StatisticsService;
 import com.xmies.Library.service.userRelated.UserService;
 import com.xmies.Library.user.LibraryUser;
 import jakarta.servlet.http.HttpSession;
@@ -30,10 +31,13 @@ public class UserLibraryController {
 
     private UserService userService;
 
+    private StatisticsService statisticsService;
+
     @Autowired
-    public UserLibraryController(LibraryService libraryService, UserService userService) {
+    public UserLibraryController(LibraryService libraryService, UserService userService, StatisticsService statisticsService) {
         this.libraryService = libraryService;
         this.userService = userService;
+        this.statisticsService = statisticsService;
     }
 
     @InitBinder
@@ -45,7 +49,10 @@ public class UserLibraryController {
     }
 
     @GetMapping("/menu")
-    public String menu(HttpSession session) {
+    public String menu(HttpSession session,
+                       Model model) {
+
+        model.addAttribute("statistics", statisticsService.getStatistics());
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -68,12 +75,11 @@ public class UserLibraryController {
             session.setAttribute("user", libraryUser);
         }
 
-
         return "library/menu";
     }
 
     @GetMapping("/list")
-    public String listBooks(Model model) {
+    public String getBooksList(Model model) {
 
         List<Book> books = libraryService.findAllBooks();
 
