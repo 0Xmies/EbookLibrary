@@ -28,22 +28,26 @@ public class StatisticsAspect {
         statisticsService.save(statistics);
     }
 
-    @After("com.xmies.Library.aspect.Expressions.forAdminLibraryController() && !(com.xmies.Library.aspect.Expressions.forAllInitBinders())")
+    @After("com.xmies.Library.aspect.Expressions.forAdminLibraryController() &&" +
+            " !(com.xmies.Library.aspect.Expressions.forAllInitBinders())")
     public void countAdminRequests() {
         statistics.setAdminOnlyRequests(statistics.getAdminOnlyRequests() + 1);
     }
 
-    @After("com.xmies.Library.aspect.Expressions.forUserLibraryController() && !(com.xmies.Library.aspect.Expressions.forAllInitBinders())")
+    @After("com.xmies.Library.aspect.Expressions.forUserLibraryController()" +
+            " && !(com.xmies.Library.aspect.Expressions.forAllInitBinders())")
     public void countPubliclyAvailableRequests() {
         statistics.setPubliclyAvailableRequests(statistics.getPubliclyAvailableRequests() + 1);
     }
 
-    @After("com.xmies.Library.aspect.Expressions.forBookList() && !(com.xmies.Library.aspect.Expressions.forAllInitBinders())")
+    @After("com.xmies.Library.aspect.Expressions.forBookList()" +
+            " && !(com.xmies.Library.aspect.Expressions.forAllInitBinders())")
     public void countBookListRequests() {
         statistics.setBookListEntries(statistics.getBookListEntries() + 1);
     }
 
-    @After("com.xmies.Library.aspect.Expressions.forAuthorList() && !(com.xmies.Library.aspect.Expressions.forAllInitBinders())")
+    @After("com.xmies.Library.aspect.Expressions.forAuthorList()" +
+            " && !(com.xmies.Library.aspect.Expressions.forAllInitBinders())")
     public void countAuthorListRequests() {
         statistics.setAuthorListEntries(statistics.getAuthorListEntries() + 1);
     }
