@@ -10,7 +10,6 @@ import com.xmies.Library.service.userRelated.UserService;
 import com.xmies.Library.user.LibraryUser;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +41,6 @@ public class UserLibraryController {
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
-
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 
         webDataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
@@ -52,24 +50,22 @@ public class UserLibraryController {
     public String menu(HttpSession session,
                        Model model) {
 
-        model.addAttribute("statistics", statisticsService.getStatistics());
-
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        model.addAttribute("statistics", statisticsService.getStatistics());
 
         if (principal == null) {
             return "library/menu";
         }
 
         String username;
-
         if (principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
 
-            User user = userService.findByUserName(username);
-
+        User user = userService.findByUserName(username);
         if (user != null) {
             LibraryUser libraryUser = new LibraryUser(user);
             session.setAttribute("user", libraryUser);
@@ -80,7 +76,6 @@ public class UserLibraryController {
 
     @GetMapping("/list")
     public String getBooksList(Model model) {
-
         List<Book> books = libraryService.findAllBooks();
 
         model.addAttribute("books", books);
@@ -90,7 +85,6 @@ public class UserLibraryController {
 
     @GetMapping("/authorsList")
     public String getAuthorsList(Model model) {
-
         List<Author> authors = libraryService.findAllAuthors();
 
         model.addAttribute("authors", authors);
@@ -100,7 +94,6 @@ public class UserLibraryController {
 
     @GetMapping("/book-information")
     public String bookInformation(@RequestParam("bookId") int id, Model model) {
-
         Book book = libraryService.findBookAndAuthorsByBookId(id);
         List<Review> reviews = libraryService.findReviewsByBookId(id);
 
@@ -109,13 +102,11 @@ public class UserLibraryController {
         model.addAttribute("book", book);
         model.addAttribute("authors", book.getAuthors());
 
-
         return "library/book-info";
     }
 
     @GetMapping("/seeAuthorDetails")
     public String seeAuthorDetails(@RequestParam("authorId") int id, Model model) {
-
         Author author = libraryService.findAuthorAndAuthorDetailById(id);
 
         model.addAttribute("author", author);
@@ -125,8 +116,8 @@ public class UserLibraryController {
 
     @GetMapping("/addReviewForm")
     public String addReviewForm(@RequestParam("bookId") int id, Model model) {
-
         Review review = new Review();
+
         review.setBook(libraryService.findBookById(id));
         model.addAttribute("review", review);
 

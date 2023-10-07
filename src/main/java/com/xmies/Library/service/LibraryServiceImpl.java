@@ -34,7 +34,6 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public AuthorDetails findAuthorDetails(int id) {
-
         Optional<AuthorDetails> result = authorDetailsRepository.findById(id);
         AuthorDetails authorDetails;
 
@@ -59,7 +58,6 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public Author findAuthorAndAuthorDetailById(int id) {
-
         Author author = this.findAuthorById(id);
 
         if (author.getAuthorDetails() == null) {
@@ -86,9 +84,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public Author findAuthorById(int id) {
-
         Optional<Author> result = authorRepository.findById(id);
-
         Author author;
 
         if (result.isPresent()) {
@@ -117,9 +113,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public Book findBookById(int id) {
-
         Optional<Book> result = bookRepository.findById(id);
-
         Book book;
 
         if (result.isPresent()) {
@@ -148,9 +142,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public Review findReviewById(int id) {
-
         Optional<Review> result = reviewRepository.findById(id);
-
         Review review;
 
         if (result.isPresent()) {
@@ -174,7 +166,6 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void bindAuthorToBook(int authorId, int bookId) {
-
         Author author = this.findAuthorById(authorId);
         Book book = findBookById(bookId);
 
@@ -188,7 +179,6 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public Book findBookAndReviewsByBookId(int id) {
-
         Book book = bookRepository.findBookAndReviewsByBookId(id);
 
         return book;
@@ -204,7 +194,6 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     private boolean isAlreadyAnAuthor(Author author, Book book) {
-
         for (Book b : author.getBooks()) {
             if (b == book) {
                 return true;

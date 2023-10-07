@@ -1,7 +1,6 @@
 package com.xmies.Library.repository.userRelated;
 
 import com.xmies.Library.entity.userRelated.Role;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

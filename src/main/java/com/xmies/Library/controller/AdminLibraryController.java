@@ -27,7 +27,6 @@ public class AdminLibraryController {
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
-
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 
         webDataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
@@ -35,8 +34,8 @@ public class AdminLibraryController {
 
     @GetMapping("/addBookForm")
     public String addBookForm(Model model) {
-
         Book book = new Book();
+
         model.addAttribute("book", book);
 
         return "library/book-add-form";
@@ -57,8 +56,8 @@ public class AdminLibraryController {
 
     @GetMapping("/updateBookForm")
     public String updateBook(@RequestParam("bookId") int id, Model model) {
-
         Book book = libraryService.findBookAndAuthorsByBookId(id);
+
         model.addAttribute("book", book);
 
         return "library/book-add-form";
@@ -66,7 +65,6 @@ public class AdminLibraryController {
 
     @GetMapping("/deleteBook")
     public String deleteBook(@RequestParam("bookId") int id) {
-
         libraryService.deleteBookById(id);
 
         return "redirect:/library/list";
@@ -74,8 +72,8 @@ public class AdminLibraryController {
 
     @GetMapping("/addAuthorForm")
     public String addAuthorForm(Model model) {
-
         Author author = new Author();
+
         model.addAttribute("author", author);
 
         return "library/author-add-form";
@@ -96,8 +94,8 @@ public class AdminLibraryController {
 
     @GetMapping("/updateAuthorForm")
     public String updateAuthor(@RequestParam("authorId") int id, Model model) {
-
         Author author = libraryService.findAuthorById(id);
+
         model.addAttribute("author", author);
 
         return "library/author-add-form";
@@ -105,7 +103,6 @@ public class AdminLibraryController {
 
     @GetMapping("/deleteAuthor")
     public String deleteAuthor(@RequestParam("authorId") int id) {
-
         libraryService.deleteAuthorById(id);
 
         return "redirect:/library/authorsList";
@@ -113,8 +110,8 @@ public class AdminLibraryController {
 
     @GetMapping("/manageAuthors")
     public String listAuthors(@RequestParam("bookId") int id, Model model) {
-
         List<Author> authors = libraryService.findAuthorsAndBookByBookId(id);
+
         model.addAttribute("authors", authors);
 
         return "library/list-authors-for-book";
@@ -122,7 +119,6 @@ public class AdminLibraryController {
 
     @GetMapping("bindAuthorToBookList")
     public String bindAuthorToBookList(@RequestParam("authorId") int id, Model model) {
-
         List<Book> books = libraryService.findAllBooks();
         Author author = libraryService.findAuthorById(id);
 
@@ -134,7 +130,6 @@ public class AdminLibraryController {
 
     @GetMapping("bindAuthorToBook")
     public String bindAuthorToBook(@RequestParam("authorId") int id, @RequestParam("bookId") int bookId) {
-
         libraryService.bindAuthorToBook(id, bookId);
 
         return "redirect:/library/menu";
@@ -142,8 +137,8 @@ public class AdminLibraryController {
 
     @GetMapping("manageAuthorDetails")
     public String manageAuthorDetails(@RequestParam("authorId") int id, Model model) {
-
         Author author = libraryService.findAuthorById(id);
+
         model.addAttribute("author", author);
 
         return "library/author-details-manager";
@@ -151,7 +146,6 @@ public class AdminLibraryController {
 
     @GetMapping("updateAuthorDetails")
     public String updateAuthorDetails(@RequestParam("authorId") int id, Model model) {
-
         Author author = libraryService.findAuthorById(id);
         AuthorDetails authorDetails = author.getAuthorDetails();
 
@@ -175,7 +169,9 @@ public class AdminLibraryController {
     }
 
     @GetMapping("reviewUpdateForm")
-    public String reviewUpdateForm(@RequestParam("bookId") int bookId, @RequestParam("reviewId") int id, Model model) {
+    public String reviewUpdateForm(@RequestParam("bookId") int bookId,
+                                   @RequestParam("reviewId") int id,
+                                   Model model) {
 
         Review review = libraryService.findReviewById(id);
 
@@ -186,12 +182,10 @@ public class AdminLibraryController {
 
     @GetMapping("deleteReview")
     public String deleteReview(@RequestParam("bookId") int bookId, @RequestParam("reviewId") int id) {
-
         libraryService.deleteReviewById(id);
 
         return "redirect:/library/book-information?bookId=" + bookId;
     }
-
 }
 
 

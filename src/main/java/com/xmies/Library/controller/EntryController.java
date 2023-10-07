@@ -20,15 +20,12 @@ public class EntryController {
 
     private UserService userService;
 
-    private Logger logger = Logger.getLogger(getClass().getName());
-
     public EntryController(UserService userService) {
         this.userService = userService;
     }
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
-
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 
         webDataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
@@ -36,25 +33,21 @@ public class EntryController {
 
     @GetMapping("/showLoginPage")
     public String showLoginPage() {
-
         return "library/entry/login-page";
     }
 
     @GetMapping("/accessDenied")
     public String showAccessDenied() {
-
         return "library/entry/access-denied";
     }
 
     @GetMapping("/loginUserForm")
     public String loginUserForm() {
-
         return "library/entry/login-page";
     }
 
     @GetMapping("/registerUserForm")
     public String registerUserForm(Model model) {
-
         LibraryUser libraryUser = new LibraryUser();
 
         model.addAttribute("libraryUser", libraryUser);
@@ -76,16 +69,13 @@ public class EntryController {
         }
 
         User existing = userService.findByUserName(username);
-
         if (existing != null) {
             model.addAttribute("libraryUser", new User());
             model.addAttribute("registrationError", "Username taken");
 
-            logger.warning("Username already used");
             return "library/entry/registration-form";
         }
 
-        // if username is available
         userService.save(libraryUser);
 
         session.setAttribute("user", libraryUser);

@@ -3,7 +3,6 @@ package com.xmies.Library.user;
 import com.xmies.Library.entity.userRelated.User;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.context.annotation.Bean;
 
 public class LibraryUser {
 

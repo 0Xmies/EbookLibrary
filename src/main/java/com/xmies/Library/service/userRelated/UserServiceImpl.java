@@ -38,7 +38,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(LibraryUser libraryUser) {
-
         User user = new User();
 
         user.setUsername(libraryUser.getUsername());
@@ -54,7 +53,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         User user = userRepository.findByUserName(username);
 
         if (user == null) {
@@ -67,7 +65,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private List<SimpleGrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
-
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         for (Role tempRole : roles) {
@@ -77,6 +74,4 @@ public class UserServiceImpl implements UserService {
 
         return authorities;
     }
-
-
 }
