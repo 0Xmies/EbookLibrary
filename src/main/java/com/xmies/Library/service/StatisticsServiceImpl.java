@@ -2,7 +2,6 @@ package com.xmies.Library.service;
 
 import com.xmies.Library.entity.Statistics;
 import com.xmies.Library.repository.StatisticsRepository;
-import jakarta.servlet.ServletOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public Statistics getStatistics() {
-        return this.getStatistics(1);
-    }
-
-    public Statistics getStatistics(int id) {
-        int tempId = id;
+        int id = 1;
         Optional<Statistics> result = statisticsRepository.findById(id);
         Statistics statistics;
 
@@ -34,7 +29,6 @@ public class StatisticsServiceImpl implements StatisticsService {
             statistics = new Statistics
                     (0,0,0,0,0);
             statisticsRepository.save(statistics);
-            System.out.println("Created new statistics");
         }
 
         return statistics;
