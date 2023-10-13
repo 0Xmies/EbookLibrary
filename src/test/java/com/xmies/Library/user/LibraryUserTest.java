@@ -51,7 +51,7 @@ public class LibraryUserTest {
     void createCorrectLibraryUser() {
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.isEmpty(), "Should pass as this is correct Library User");
+        assertTrue(violations.isEmpty(), "Should pass as this is correct Library Users");
     }
 
     @Test

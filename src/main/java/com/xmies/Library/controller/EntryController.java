@@ -1,6 +1,6 @@
 package com.xmies.Library.controller;
 
-import com.xmies.Library.entity.userRelated.User;
+import com.xmies.Library.entity.userRelated.Users;
 import com.xmies.Library.service.userRelated.UserService;
 import com.xmies.Library.user.LibraryUser;
 import jakarta.servlet.http.HttpSession;
@@ -11,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/entry")
@@ -68,9 +66,9 @@ public class EntryController {
             return "library/entry/registration-form";
         }
 
-        User existing = userService.findByUserName(username);
+        Users existing = userService.findByUserName(username);
         if (existing != null) {
-            model.addAttribute("libraryUser", new User());
+            model.addAttribute("libraryUser", new Users());
             model.addAttribute("registrationError", "Username taken");
 
             return "library/entry/registration-form";

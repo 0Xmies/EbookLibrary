@@ -3,7 +3,7 @@ package com.xmies.Library.controller;
 import com.xmies.Library.entity.Author;
 import com.xmies.Library.entity.Book;
 import com.xmies.Library.entity.Review;
-import com.xmies.Library.entity.userRelated.User;
+import com.xmies.Library.entity.userRelated.Users;
 import com.xmies.Library.service.LibraryService;
 import com.xmies.Library.service.StatisticsService;
 import com.xmies.Library.service.userRelated.UserService;
@@ -65,10 +65,10 @@ public class UserLibraryController {
             username = principal.toString();
         }
 
-        User user = userService.findByUserName(username);
-        if (user != null) {
-            LibraryUser libraryUser = new LibraryUser(user);
-            session.setAttribute("user", libraryUser);
+        Users users = userService.findByUserName(username);
+        if (users != null) {
+            LibraryUser libraryUser = new LibraryUser(users);
+            session.setAttribute("users", libraryUser);
         }
 
         return "library/menu";
