@@ -101,7 +101,7 @@ public class UserLibraryController {
             reviews = libraryService.findReviewsByBookId(id);
             book.setReviews(reviews);
         } else {
-            return "library/error/book-information-error";
+            return "library/error/book-id-error";
         }
 
         model.addAttribute("book", book);
@@ -112,7 +112,13 @@ public class UserLibraryController {
 
     @GetMapping("/seeAuthorDetails")
     public String seeAuthorDetails(@RequestParam("authorId") int id, Model model) {
-        Author author = libraryService.findAuthorAndAuthorDetailById(id);
+            Author author;
+
+        try {
+            author = libraryService.findAuthorAndAuthorDetailById(id);
+        } catch (Exception e) {
+            return "library/error/author-id-error";
+        }
 
         model.addAttribute("author", author);
 
@@ -123,7 +129,11 @@ public class UserLibraryController {
     public String addReviewForm(@RequestParam("bookId") int id, Model model) {
         Review review = new Review();
 
-        review.setBook(libraryService.findBookById(id));
+        try {
+            review.setBook(libraryService.findBookById(id));
+        } catch (Exception e) {
+            return "library/error/book-id-error";
+        }
         model.addAttribute("review", review);
 
         return "library/review-add-form";

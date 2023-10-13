@@ -71,8 +71,7 @@ public class UserLibraryControllerTest {
     public void tryInvalidURL() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/library/abc123abc123")
                 .param("bookId", "abc"))
-                .andExpect(status().is(404))
-                .andReturn();
+                .andExpect(status().is(404));
     }
 
     @Test
@@ -129,15 +128,14 @@ public class UserLibraryControllerTest {
 
         ModelAndView modelAndView = mvcResult.getModelAndView();
 
-        ModelAndViewAssert.assertViewName(modelAndView, "library/error/book-information-error");
+        ModelAndViewAssert.assertViewName(modelAndView, "library/error/book-id-error");
     }
 
     @Test
     public void getBookInformationViewErrorWrongFormat() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/library/book-information")
                 .param("bookId", "abc"))
-                .andExpect(status().is(400))
-                .andReturn();
+                .andExpect(status().is(400));
 
     }
 
@@ -151,5 +149,41 @@ public class UserLibraryControllerTest {
         ModelAndView modelAndView = mvcResult.getModelAndView();
 
         ModelAndViewAssert.assertViewName(modelAndView, "library/author-details");
+    }
+
+    @Test
+    public void getAuthorDetailsViewWrongId() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/library/seeAuthorDetails")
+                        .param("authorId", "0"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(modelAndView, "library/error/author-id-error");
+    }
+
+    @Test
+    public void getReviewAddForm() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/library/addReviewForm")
+                .param("bookId", "1"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(modelAndView, "library/review-add-form");
+    }
+
+    @Test
+    public void getReviewAddFormWrongId() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/library/addReviewForm")
+                        .param("bookId", "0"))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(modelAndView, "library/error/book-id-error");
     }
 }
