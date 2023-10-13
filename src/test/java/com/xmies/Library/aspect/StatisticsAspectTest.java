@@ -85,16 +85,18 @@ public class StatisticsAspectTest {
 
     @Test
     public void getAdminHttpRequestIncreaseStats() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/admin/addBookForm"));
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/addBookForm")).andExpect(status().is3xxRedirection());
+        statisticsAspect.countAdminRequests();
+
         assertTrue(statisticsService.getStatistics().getAdminOnlyRequests() == 0);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
-        assertTrue(statisticsService.getStatistics().getAdminOnlyRequests() == 0);
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu")).andExpect(status().isOk());
+        assertTrue(statisticsService.getStatistics().getAdminOnlyRequests() == 1);
     }
 
     @Test
     public void getMenuHttpRequestIncreaseStats() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu")).andExpect(status().isOk());
         assertTrue(statisticsService.getStatistics().getMenuEntries() == 1);
     }
 
@@ -103,7 +105,7 @@ public class StatisticsAspectTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/library/list")).andExpect(status().isOk());
         assertTrue(statisticsService.getStatistics().getPubliclyAvailableRequests() == 0);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu")).andExpect(status().isOk());
         assertSame(1, statisticsService.getStatistics().getPubliclyAvailableRequests());
     }
 
