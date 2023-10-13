@@ -95,9 +95,14 @@ public class UserLibraryController {
     @GetMapping("/book-information")
     public String bookInformation(@RequestParam("bookId") int id, Model model) {
         Book book = libraryService.findBookAndAuthorsByBookId(id);
-        List<Review> reviews = libraryService.findReviewsByBookId(id);
+        List<Review> reviews = null;
 
-        book.setReviews(reviews);
+        if (book != null) {
+            reviews = libraryService.findReviewsByBookId(id);
+            book.setReviews(reviews);
+        } else {
+            return "library/error/book-information-error";
+        }
 
         model.addAttribute("book", book);
         model.addAttribute("authors", book.getAuthors());

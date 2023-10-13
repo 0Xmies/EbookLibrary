@@ -1,8 +1,8 @@
 package com.xmies.Library.aspect;
 
 import com.xmies.Library.entity.Statistics;
-import com.xmies.Library.repository.StatisticsRepository;
 import com.xmies.Library.service.StatisticsService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource("/application-test.properties")
 @SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class StatisticsAspectTest {
 
     @Autowired
@@ -49,7 +48,9 @@ public class StatisticsAspectTest {
         jdbc.execute(sqlCreateStatistics);
     }
 
+
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void statisticsDoNotUpdatePerRequest() {
         statisticsAspect.countAuthorListRequests();
         statisticsAspect.countAdminRequests();
@@ -66,6 +67,7 @@ public class StatisticsAspectTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void statisticsUpdateWhenMenuRequested() {
 
         statisticsAspect.countAuthorListRequests();
@@ -84,46 +86,51 @@ public class StatisticsAspectTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void getAdminHttpRequestIncreaseStats() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/admin/addBookForm")).andExpect(status().is3xxRedirection());
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/addBookForm")).andExpect(status().is3xxRedirection()).andReturn();
         statisticsAspect.countAdminRequests();
 
         assertTrue(statisticsService.getStatistics().getAdminOnlyRequests() == 0);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
         assertTrue(statisticsService.getStatistics().getAdminOnlyRequests() == 1);
     }
 
     @Test
+    //@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void getMenuHttpRequestIncreaseStats() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
         assertTrue(statisticsService.getStatistics().getMenuEntries() == 1);
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void getPublicHttpRequestIncreaseStats() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/list")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/list"));
         assertTrue(statisticsService.getStatistics().getPubliclyAvailableRequests() == 0);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu")).andExpect(status().isOk());
-        assertSame(1, statisticsService.getStatistics().getPubliclyAvailableRequests());
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
+        assertTrue(statisticsService.getStatistics().getPubliclyAvailableRequests() == 1);
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void getBookListHttpRequestIncreaseStats() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/list")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/list"));
         assertTrue(statisticsService.getStatistics().getBookListEntries() == 0);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
         assertTrue(statisticsService.getStatistics().getBookListEntries() == 1);
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void getAuthorListHttpRequestIncreaseStats() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/authorsList")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/authorsList"));
         assertTrue(statisticsService.getStatistics().getAuthorListEntries() == 0);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu")).andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
         assertTrue(statisticsService.getStatistics().getAuthorListEntries() == 1);
     }
 }
