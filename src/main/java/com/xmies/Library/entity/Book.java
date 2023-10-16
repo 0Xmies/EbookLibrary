@@ -8,6 +8,7 @@ import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "book")
@@ -33,6 +34,32 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private List<Author> authors;
+
+    /**
+     * Compares the current entity's ID with another entity's ID. This method is intended
+     * for use with persisted or managed entities to check whether they are the same entity
+     * in the database.
+     *
+     * @param o the reference object with which to compare.
+     * @return true if the IDs are the same, false otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book book)) return false;
+        return id == book.id;
+    }
+
+    /**
+     * Returns a hash code value for the object. This method computes a hash code
+     * based on the ID of the Book object using the Objects hash method.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     public List<Review> getReviews() {
         return reviews;
@@ -67,6 +94,8 @@ public class Book {
 
         reviews.add(review);
     }
+
+
 
     public Book() {
     }
