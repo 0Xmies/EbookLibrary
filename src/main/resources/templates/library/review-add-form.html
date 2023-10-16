@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-  <title>Save review</title>
+    <title>Save review</title>
 </head>
 <body>
 
 <div th:if="${session.users}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
-  <span th:text="'Username: ' + ${session.users.username}"></span> <br>
-  <span th:text="'First name: ' + ${session.users.firstName}"></span> <br>
-  <span th:text="'Last name: ' + ${session.users.lastName}"></span>
+    <span th:text="'Username: ' + ${session.users.username}"></span> <br>
+    <span th:text="'First name: ' + ${session.users.firstName}"></span> <br>
+    <span th:text="'Last name: ' + ${session.users.lastName}"></span>
 </div>
 
 <div class="container mt-5">
-  <h2>Author details form</h2>
-  <hr>
+    <h2>Author details form</h2>
+    <hr>
 
-  <form action="#" th:action="@{~/library/saveReview}"
-        th:object="${review}" method="post">
+    <form action="#" th:action="@{~/library/saveReview}"
+          th:object="${review}" method="post">
 
-    <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{id}">
 
-    <input type="number" min="1" max="10" th:field="*{rating}"
-           class="form-control mb-4 w-30" placeholder="rating">
+        <input type="number" min="1" max="10" th:field="*{rating}"
+               class="form-control mb-4 w-30" placeholder="rating">
 
-    <div th:if="${#fields.hasErrors('rating')}" class="text-danger">
-      <ul>
-        <li th:text="'Please provide a value'"></li>
-      </ul>
+        <div th:if="${#fields.hasErrors('rating')}" class="text-danger">
+            <ul>
+                <li th:text="'Please provide a value'"></li>
+            </ul>
+        </div>
+
+        <input type="text" th:field="*{comment}"
+               class="form-control mb-4 w-30" placeholder="comment">
+
+        <div th:if="${#fields.hasErrors('comment')}" class="text-danger">
+            <ul>
+                <li th:each="error : ${#fields.errors('comment')}" th:text="'Comment - ' + ${error}"></li>
+            </ul>
+        </div>
+
+        <input type="hidden" th:field="*{book.id}">
+
+        <button type="submit"
+                class="btn btn-primary mb-2">Save
+        </button>
+
+    </form>
+
+    <hr>
+    <div th:if="${param.bookId}">
+        <a th:href="@{~/library/book-information(bookId=${param.bookId})}"
+           class="btn btn-secondary">
+            Back to book information
+        </a>
     </div>
 
-    <input type="text" th:field="*{comment}"
-           class="form-control mb-4 w-30" placeholder="comment">
-
-    <div th:if="${#fields.hasErrors('comment')}" class="text-danger">
-      <ul>
-        <li th:each="error : ${#fields.errors('comment')}" th:text="'Comment - ' + ${error}"></li>
-      </ul>
+    <div th:if="!(${param.bookId})">
+        <a th:href="@{~/library/book-information(bookId=${bookIdToBack})}"
+           class="btn btn-secondary">
+            Back to book information
+        </a>
     </div>
-
-    <input type="hidden" th:field="*{book.id}">
-
-    <button type="submit"
-            class="btn btn-primary mb-2">Save</button>
-
-  </form>
-
-  <hr>
-  <div th:if="${param.bookId}">
-    <a th:href="@{~/library/book-information(bookId=${param.bookId})}"
-       class="btn btn-secondary">
-      Back to book information
-    </a>
-  </div>
-
-  <div th:if="!(${param.bookId})">
-    <a th:href="@{~/library/book-information(bookId=${bookIdToBack})}"
-       class="btn btn-secondary">
-      Back to book information
-    </a>
-  </div>
 
 </div>
 
