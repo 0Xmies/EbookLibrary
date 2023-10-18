@@ -1,31 +1,30 @@
 package com.xmies.Library.controller;
 
-import com.xmies.Library.user.LibraryUser;
-import jakarta.servlet.http.HttpSession;
+import com.xmies.Library.entity.Author;
+import com.xmies.Library.entity.Book;
+import com.xmies.Library.entity.Review;
+import com.xmies.Library.entity.Statistics;
+import com.xmies.Library.service.LibraryService;
+import com.xmies.Library.service.StatisticsService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.ModelAndView;
 
-import static org.hamcrest.Matchers.is;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource("/application-test.properties")
@@ -37,6 +36,12 @@ public class UserLibraryControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
+    private LibraryService libraryService;
+
+    @Autowired
+    private StatisticsService statisticsService;
+
+    @Autowired
     private JdbcTemplate jdbc;
 
     @Value("${script.sql.create-books}")
@@ -46,10 +51,10 @@ public class UserLibraryControllerTest {
     private String sqlDeleteBooks;
 
     @Value("${script.sql.create-authors}")
-    private String sqlCreateAuthor;
+    private String sqlCreateAuthors;
 
     @Value("${script.sql.delete-authors}")
-    private String sqlDeleteAuthor;
+    private String sqlDeleteAuthors;
 
     @Value("${script.sql.create-authors-details}")
     private String sqlCreateAuthorDetails;
@@ -57,20 +62,42 @@ public class UserLibraryControllerTest {
     @Value("${script.sql.delete-authors-details}")
     private String sqlDeleteAuthorDetails;
 
+    @Value("${script.sql.delete-reviews}")
+    private String sqlDeleteReviews;
+
+    @Value("${script.sql.delete-statistics}")
+    private String sqlDeleteStatistics;
+
+    @Value("${script.sql.create-book_author}")
+    private String sqlCreateBook_AuthorTable;
+
+    @Value("${script.sql.delete-book_author}")
+    private String sqlDeleteBook_AuthorTable;
+
+    @Value("${script.sql.create-review}")
+    private String sqlCreateReview;
+
     @BeforeEach
     public void beforeEach() {
-        jdbc.execute(sqlDeleteBooks);
-        jdbc.execute(sqlDeleteAuthor);
-        jdbc.execute(sqlDeleteAuthorDetails);
         jdbc.execute(sqlCreateBooks);
+        jdbc.execute(sqlCreateReview);
         jdbc.execute(sqlCreateAuthorDetails);
-        jdbc.execute(sqlCreateAuthor);
+        jdbc.execute(sqlCreateAuthors);
+        jdbc.execute(sqlCreateBook_AuthorTable);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        jdbc.execute(sqlDeleteBooks);
+        jdbc.execute(sqlDeleteReviews);
+        jdbc.execute(sqlDeleteAuthors);
+        jdbc.execute(sqlDeleteAuthorDetails);
+        jdbc.execute(sqlDeleteBook_AuthorTable);
     }
 
     @Test
     public void tryInvalidURL() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/library/abc123abc123")
-                .param("bookId", "abc"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/abc123abc123"))
                 .andExpect(status().is(404));
     }
 
@@ -80,8 +107,11 @@ public class UserLibraryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
+        Statistics statistics = statisticsService.getStatistics();
+
         ModelAndView modelAndView = mvcResult.getModelAndView();
 
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView, "statistics", statistics);
         ModelAndViewAssert.assertViewName(modelAndView, "library/menu");
     }
 
@@ -91,8 +121,11 @@ public class UserLibraryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
+        List<Book> books = libraryService.findAllBooks();
+
         ModelAndView modelAndView = mvcResult.getModelAndView();
 
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView, "books", books);
         ModelAndViewAssert.assertViewName(modelAndView, "library/list-books");
     }
 
@@ -102,8 +135,11 @@ public class UserLibraryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
+        List<Author> authors = libraryService.findAllAuthors();
+
         ModelAndView modelAndView = mvcResult.getModelAndView();
 
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView, "authors", authors);
         ModelAndViewAssert.assertViewName(modelAndView, "library/list-authors");
     }
 
@@ -114,21 +150,22 @@ public class UserLibraryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        ModelAndView modelAndView = mvcResult.getModelAndView();
+        Book book = libraryService.findBookAndAuthorsByBookId(1);
+        List<Author> authors = book.getAuthors();
 
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        Iterable<Author> authorsFromModel = (Iterable<Author>) modelAndView.getModel().get("authors");
+
+        assertIterableEquals(authorsFromModel, authors);
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView, "book", book);
         ModelAndViewAssert.assertViewName(modelAndView, "library/book-info");
     }
 
     @Test
     public void getBookInformationViewErrorWrongId() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/library/book-information")
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/book-information")
                 .param("bookId", "0"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        ModelAndView modelAndView = mvcResult.getModelAndView();
-
-        ModelAndViewAssert.assertViewName(modelAndView, "library/error/book-id-error");
+                .andExpect(status().is(404));
     }
 
     @Test
@@ -136,7 +173,6 @@ public class UserLibraryControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/library/book-information")
                 .param("bookId", "abc"))
                 .andExpect(status().is(400));
-
     }
 
     @Test
@@ -146,21 +182,19 @@ public class UserLibraryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
+        Author author = libraryService.findAuthorById(1);
+
         ModelAndView modelAndView = mvcResult.getModelAndView();
 
+        ModelAndViewAssert.assertModelAttributeValue(modelAndView, "author", author);
         ModelAndViewAssert.assertViewName(modelAndView, "library/author-details");
     }
 
     @Test
     public void getAuthorDetailsViewWrongId() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/library/seeAuthorDetails")
-                        .param("authorId", "0"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        ModelAndView modelAndView = mvcResult.getModelAndView();
-
-        ModelAndViewAssert.assertViewName(modelAndView, "library/error/author-id-error");
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/seeAuthorDetails")
+                .param("authorId", "0"))
+                .andExpect(status().is(404));
     }
 
     @Test
@@ -177,13 +211,30 @@ public class UserLibraryControllerTest {
 
     @Test
     public void getReviewAddFormWrongId() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/library/addReviewForm")
-                        .param("bookId", "0"))
-                .andExpect(status().isOk())
+        mockMvc.perform(MockMvcRequestBuilders.get("/library/addReviewForm")
+                .param("bookId", "0"))
+                .andExpect(status().is(404));
+    }
+
+    @Test
+    public void postSaveReview() throws Exception {
+        Book book = libraryService.findBookById(1);
+        Review review = new Review();
+        review.setRating(3);
+        review.setComment("not good");
+        review.setBook(book);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/library/saveReview")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .flashAttr("review", review))
+                .andExpect(status().is3xxRedirection())
                 .andReturn();
 
         ModelAndView modelAndView = mvcResult.getModelAndView();
 
-        ModelAndViewAssert.assertViewName(modelAndView, "library/error/book-id-error");
+        ModelAndViewAssert.assertViewName(modelAndView,
+                "redirect:/library/book-information?bookId=" + book.getId());
+        assertTrue(libraryService.reviewExistsById(2));
+        assertEquals(review.getComment() ,libraryService.findReviewById(2).getComment());
     }
 }

@@ -39,9 +39,14 @@
 
             <td th:text="${book.title}"/>
             <td>
-                <a th:href="@{bindAuthorToBook(bookId=${book.id}, authorId=${author.id})}" class="btn btn-primary">
-                    Bind current author to this book
-                </a>
+                <form th:object="${book}" th:action="@{bindAuthorToBook(bookId=${book.id}, authorId=${author.id})}"
+                      th:method="PUT">
+                    <button type="submit"
+                            class="btn btn-info ms-2"
+                            onclick="if (!(confirm('Are you sure you want to bind to this book?'))) return false">
+                        Update
+                    </button>
+                </form>
             </td>
 
         </tr>

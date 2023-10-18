@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers(mvc.pattern("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(mvc.pattern("/library/**")).permitAll()
                         .requestMatchers(mvc.pattern("/entry/**")).permitAll()
+                        .requestMatchers(mvc.pattern("/error/**")).permitAll()
                         .anyRequest().authenticated()
         )
                 .formLogin(form ->

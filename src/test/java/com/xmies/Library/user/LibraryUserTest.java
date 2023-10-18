@@ -59,7 +59,7 @@ public class LibraryUserTest {
         libraryUser.setUsername(null);
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of NotNull constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of NotNull constraint");
     }
 
     @Test
@@ -67,13 +67,13 @@ public class LibraryUserTest {
         libraryUser.setUsername("A");
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of Size 2-50 constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of Size 2-50 constraint");
 
         String tooLongString = "A".repeat(51);
         libraryUser.setUsername(tooLongString);
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of Size 2-50 constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of Size 2-50 constraint");
     }
 
     @Test
@@ -81,7 +81,7 @@ public class LibraryUserTest {
         libraryUser.setPassword(null);
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of NotNull constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of NotNull constraint");
     }
 
     @Test
@@ -89,13 +89,13 @@ public class LibraryUserTest {
         libraryUser.setPassword("AB");
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of Size 3-50 constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of Size 3-50 constraint");
 
         String tooLongString = "*".repeat(51);
         libraryUser.setPassword(tooLongString);
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of Size 3-50 constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of Size 3-50 constraint");
     }
 
     @Test
@@ -103,7 +103,7 @@ public class LibraryUserTest {
         libraryUser.setFirstName(null);
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of NotNull constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of NotNull constraint");
     }
 
     @Test
@@ -111,13 +111,13 @@ public class LibraryUserTest {
         libraryUser.setFirstName("");
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of Size 1-50 constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of Size 1-50 constraint");
 
         String tooLongString = "A".repeat(51);
         libraryUser.setFirstName(tooLongString);
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of Size 1-50 constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of Size 1-50 constraint");
     }
 
     @Test
@@ -125,7 +125,7 @@ public class LibraryUserTest {
         libraryUser.setLastName(null);
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of NotNull constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of NotNull constraint");
     }
 
     @Test
@@ -133,12 +133,12 @@ public class LibraryUserTest {
         libraryUser.setLastName("");
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of Size 1-50 constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of Size 1-50 constraint");
 
         String tooLongString = "A".repeat(51);
         libraryUser.setLastName(tooLongString);
         violations = validator.validate(libraryUser);
 
-        assertTrue(violations.size() == 1, "Should fail cause of Size 1-50 constraint");
+        assertTrue(violations.size() == 1, "Should pass cause of Size 1-50 constraint");
     }
 }

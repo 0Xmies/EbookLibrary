@@ -2,6 +2,8 @@ package com.xmies.Library.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "statistics")
 public class Statistics {
@@ -36,6 +38,31 @@ public class Statistics {
         this.adminOnlyRequests = adminOnlyRequests;
         this.publiclyAvailableRequests = publiclyAvailableRequests;
     }
+
+    /**
+     * Compares the current entity's entries with another entity's entries.
+     *
+     * @param o the reference object with which to compare.
+     * @return true if the IDs are the same, false otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Statistics that)) return false;
+        return menuEntries == that.menuEntries && bookListEntries == that.bookListEntries && authorListEntries == that.authorListEntries && adminOnlyRequests == that.adminOnlyRequests && publiclyAvailableRequests == that.publiclyAvailableRequests;
+    }
+
+    /**
+     * Returns a hash code value for the object. This method computes a hash code
+     * based on the actual value of entries in Statistics object using the Objects hash method.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(menuEntries, bookListEntries, authorListEntries, adminOnlyRequests, publiclyAvailableRequests);
+    }
+
 
     public int getMenuEntries() {
         return menuEntries;

@@ -7,8 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -28,6 +30,9 @@ public class StatisticsAspectTest {
     private MockMvc mockMvc;
 
     @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
     private StatisticsService statisticsService;
 
     @Autowired
@@ -35,6 +40,8 @@ public class StatisticsAspectTest {
 
     @Autowired
     private JdbcTemplate jdbc;
+
+    private DefaultSingletonBeanRegistry registry;
 
     @Value("${script.sql.create-statistics}")
     private String sqlCreateStatistics;
@@ -44,8 +51,12 @@ public class StatisticsAspectTest {
 
     @BeforeEach
     public void beforeEach() {
-        jdbc.execute(sqlDeleteStatistics);
         jdbc.execute(sqlCreateStatistics);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        jdbc.execute(sqlDeleteStatistics);
     }
 
 
@@ -68,13 +79,16 @@ public class StatisticsAspectTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    public void statisticsUpdateWhenMenuRequested() {
+    public void statisticsUpdateWhenRequested() {
 
         statisticsAspect.countAuthorListRequests();
         statisticsAspect.countAdminRequests();
         statisticsAspect.countPubliclyAvailableRequests();
         statisticsAspect.countBookListRequests();
         statisticsAspect.updateStatistics();
+
+        statisticsAspect.countAuthorListRequests();
+        statisticsAspect.countAdminRequests();
 
         Statistics dbStatistics = statisticsService.getStatistics();
 
@@ -98,7 +112,7 @@ public class StatisticsAspectTest {
     }
 
     @Test
-    //@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void getMenuHttpRequestIncreaseStats() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/library/menu"));
         assertTrue(statisticsService.getStatistics().getMenuEntries() == 1);

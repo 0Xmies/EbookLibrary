@@ -33,7 +33,27 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public AuthorDetails findAuthorDetails(int id) {
+    public boolean bookExistsById(int id) {
+        return bookRepository.existsById(id);
+    }
+
+    @Override
+    public boolean authorExistsById(int id) {
+        return authorRepository.existsById(id);
+    }
+
+    @Override
+    public boolean authorDetailsExistsById(int id) {
+        return authorDetailsRepository.existsById(id);
+    }
+
+    @Override
+    public boolean reviewExistsById(int id) {
+        return reviewRepository.existsById(id);
+    }
+
+    @Override
+    public AuthorDetails findAuthorDetailsById(int id) {
         Optional<AuthorDetails> result = authorDetailsRepository.findById(id);
         AuthorDetails authorDetails;
 
@@ -63,6 +83,7 @@ public class LibraryServiceImpl implements LibraryService {
         if (author.getAuthorDetails() == null) {
             author.setAuthorDetails(this.getBlankAuthorDetails());
         }
+
         return author;
     }
 

@@ -39,6 +39,14 @@ public class Author {
     )
     private List<Book> books;
 
+    public Author() {
+    }
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     /**
      * Compares the current entity's ID with another entity's ID. This method is intended
      * for use with persisted or managed entities to check whether they are the same entity
@@ -88,14 +96,6 @@ public class Author {
         }
 
         books.add(book);
-    }
-
-    public Author() {
-    }
-
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     public int getId() {

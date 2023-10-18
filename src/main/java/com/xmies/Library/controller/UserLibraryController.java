@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -50,26 +52,30 @@ public class UserLibraryController {
     public String menu(HttpSession session,
                        Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+         if (SecurityContextHolder.getContext().getAuthentication() != null) {
+             Object principal;
+             String username;
+
+             principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+             if (principal == null) {
+                 return "library/menu";
+             }
+
+             if (principal instanceof UserDetails) {
+                 username = ((UserDetails) principal).getUsername();
+             } else {
+                 username = principal.toString();
+             }
+
+             Users users = userService.findByUserName(username);
+             if (users != null) {
+                 LibraryUser libraryUser = new LibraryUser(users);
+                 session.setAttribute("users", libraryUser);
+             }
+         }
 
         model.addAttribute("statistics", statisticsService.getStatistics());
-
-        if (principal == null) {
-            return "library/menu";
-        }
-
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-
-        Users users = userService.findByUserName(username);
-        if (users != null) {
-            LibraryUser libraryUser = new LibraryUser(users);
-            session.setAttribute("users", libraryUser);
-        }
 
         return "library/menu";
     }
@@ -94,15 +100,14 @@ public class UserLibraryController {
 
     @GetMapping("/book-information")
     public String bookInformation(@RequestParam("bookId") int id, Model model) {
-        Book book = libraryService.findBookAndAuthorsByBookId(id);
-        List<Review> reviews = null;
 
-        if (book != null) {
-            reviews = libraryService.findReviewsByBookId(id);
-            book.setReviews(reviews);
-        } else {
-            return "library/error/book-id-error";
+        if (!libraryService.bookExistsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find book");
         }
+
+        Book book = libraryService.findBookAndAuthorsByBookId(id);
+        List<Review> reviews = libraryService.findReviewsByBookId(id);
+        book.setReviews(reviews);
 
         model.addAttribute("book", book);
         model.addAttribute("authors", book.getAuthors());
@@ -112,13 +117,12 @@ public class UserLibraryController {
 
     @GetMapping("/seeAuthorDetails")
     public String seeAuthorDetails(@RequestParam("authorId") int id, Model model) {
-            Author author;
 
-        try {
-            author = libraryService.findAuthorAndAuthorDetailById(id);
-        } catch (Exception e) {
-            return "library/error/author-id-error";
+        if (!libraryService.authorExistsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find author");
         }
+
+        Author author = libraryService.findAuthorAndAuthorDetailById(id);
 
         model.addAttribute("author", author);
 
@@ -127,13 +131,14 @@ public class UserLibraryController {
 
     @GetMapping("/addReviewForm")
     public String addReviewForm(@RequestParam("bookId") int id, Model model) {
-        Review review = new Review();
 
-        try {
-            review.setBook(libraryService.findBookById(id));
-        } catch (Exception e) {
-            return "library/error/book-id-error";
+        if (!libraryService.bookExistsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find author");
         }
+
+        Review review = new Review();
+        review.setBook(libraryService.findBookById(id));
+
         model.addAttribute("review", review);
 
         return "library/review-add-form";
@@ -142,8 +147,7 @@ public class UserLibraryController {
     @PostMapping("/saveReview")
     public String saveReview(@Valid @ModelAttribute("review") Review review,
                              BindingResult bindingResult,
-                             Model model,
-                             @RequestParam int id) {
+                             Model model) {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("bookIdToBack", review.getBook().getId());
