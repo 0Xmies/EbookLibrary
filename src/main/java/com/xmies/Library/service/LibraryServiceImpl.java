@@ -215,6 +215,10 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     private boolean isAlreadyAnAuthor(Author author, Book book) {
+        if (author.getBooks() == null) {
+            return false;
+        }
+
         for (Book b : author.getBooks()) {
             if (b == book) {
                 return true;
