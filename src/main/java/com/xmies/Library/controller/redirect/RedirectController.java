@@ -11,7 +11,6 @@ public class RedirectController {
 
     @GetMapping("")
     public String redirectToMenu() {
-
         return "redirect:/library/menu";
     }
 }

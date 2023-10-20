@@ -1,12 +1,12 @@
 package com.xmies.Library.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "author")
@@ -39,6 +39,40 @@ public class Author {
     )
     private List<Book> books;
 
+    public Author() {
+    }
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    /**
+     * Compares the current entity's ID with another entity's ID. This method is intended
+     * for use with persisted or managed entities to check whether they are the same entity
+     * in the database.
+     *
+     * @param o the reference object with which to compare.
+     * @return true if the IDs are the same, false otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Author author)) return false;
+        return id == author.getId();
+    }
+
+    /**
+     * Returns a hash code value for the object. This method computes a hash code
+     * based on the ID of the Author object using the Objects hash method.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     public AuthorDetails getAuthorDetails() {
         return authorDetails;
     }
@@ -62,14 +96,6 @@ public class Author {
         }
 
         books.add(book);
-    }
-
-    public Author() {
-    }
-
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     public int getId() {

@@ -1,14 +1,12 @@
 package com.xmies.Library.repository.userRelated;
 
-import com.xmies.Library.entity.userRelated.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.xmies.Library.entity.userRelated.Users;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
+public interface UserRepository extends CrudRepository<Users, Integer> {
 
-public interface UserRepository extends JpaRepository<User, Integer> {
-
-    @Query("SELECT u FROM User u " +
+    @Query("SELECT u FROM Users u " +
             "WHERE u.username = ?1")
-    User findByUserName(String username);
+    Users findByUserName(String username);
 }

@@ -1,7 +1,7 @@
 package com.xmies.Library.service.userRelated;
 
 import com.xmies.Library.entity.userRelated.Role;
-import com.xmies.Library.entity.userRelated.User;
+import com.xmies.Library.entity.userRelated.Users;
 import com.xmies.Library.repository.userRelated.RoleRepository;
 import com.xmies.Library.repository.userRelated.UserRepository;
 import com.xmies.Library.user.LibraryUser;
@@ -32,42 +32,45 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUserName(String userName) {
+    public Users findByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
 
     @Override
     public void save(LibraryUser libraryUser) {
+        Users users = new Users();
 
-        User user = new User();
+        users.setUsername(libraryUser.getUsername());
+        users.setPassword(passwordEncoder.encode(libraryUser.getPassword()));
+        users.setEnabled(true);
+        users.setFirstName(libraryUser.getFirstName());
+        users.setLastName(libraryUser.getLastName());
 
-        user.setUsername(libraryUser.getUsername());
-        user.setPassword(passwordEncoder.encode(libraryUser.getPassword()));
-        user.setEnabled(true);
-        user.setFirstName(libraryUser.getFirstName());
-        user.setLastName(libraryUser.getLastName());
+        Role role;
+        if (roleRepository.findRoleByName("ROLE_USER") == null) {
+            role = new Role("ROLE_USER");
+            roleRepository.save(role);
+        }
 
-        user.addRole(roleRepository.findRoleByName("ROLE_USER"));
+        users.addRole(roleRepository.findRoleByName("ROLE_USER"));
 
-        userRepository.save(user);
+        userRepository.save(users);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Users users = userRepository.findByUserName(username);
 
-        User user = userRepository.findByUserName(username);
-
-        if (user == null) {
+        if (users == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
 
-        List<SimpleGrantedAuthority> authorities = mapRolesToAuthorities(user.getRoles());
+        List<SimpleGrantedAuthority> authorities = mapRolesToAuthorities(users.getRoles());
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(users.getUsername(), users.getPassword(), authorities);
     }
 
     private List<SimpleGrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
-
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         for (Role tempRole : roles) {
@@ -77,6 +80,4 @@ public class UserServiceImpl implements UserService {
 
         return authorities;
     }
-
-
 }

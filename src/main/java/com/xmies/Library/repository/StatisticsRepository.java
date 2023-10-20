@@ -1,7 +1,7 @@
 package com.xmies.Library.repository;
 
 import com.xmies.Library.entity.Statistics;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface StatisticsRepository extends JpaRepository<Statistics, Integer> {
+public interface StatisticsRepository extends CrudRepository<Statistics, Integer> {
 }

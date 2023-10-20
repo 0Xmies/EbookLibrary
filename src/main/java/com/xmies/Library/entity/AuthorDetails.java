@@ -3,6 +3,8 @@ package com.xmies.Library.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "author_details")
 public class AuthorDetails {
@@ -38,6 +40,32 @@ public class AuthorDetails {
         this.countryOfOrigin = countryOfOrigin;
         this.hobby = hobby;
         this.yearOfBirth = yearOfBirth;
+    }
+
+    /**
+     * Compares the current entity's ID with another entity's ID. This method is intended
+     * for use with persisted or managed entities to check whether they are the same entity
+     * in the database.
+     *
+     * @param o the reference object with which to compare.
+     * @return true if the IDs are the same, false otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AuthorDetails that)) return false;
+        return id == that.id;
+    }
+
+    /**
+     * Returns a hash code value for the object. This method computes a hash code
+     * based on the ID of the AuthorDetails object using the Objects hash method.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public int getId() {

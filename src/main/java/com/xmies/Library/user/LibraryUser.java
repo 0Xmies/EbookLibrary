@@ -1,9 +1,9 @@
 package com.xmies.Library.user;
 
-import com.xmies.Library.entity.userRelated.User;
+import com.xmies.Library.entity.userRelated.Users;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.context.annotation.Bean;
+
 
 public class LibraryUser {
 
@@ -38,11 +38,11 @@ public class LibraryUser {
         this.lastName = lastName;
     }
 
-    public LibraryUser(User user) {
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
+    public LibraryUser(Users users) {
+        this.username = users.getUsername();
+        this.password = users.getPassword();
+        this.firstName = users.getFirstName();
+        this.lastName = users.getLastName();
     }
 
     public String getUsername() {

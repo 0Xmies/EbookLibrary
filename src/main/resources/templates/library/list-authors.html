@@ -1,77 +1,85 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-  <title>Authors list</title>
+    <title>Authors list</title>
 </head>
 <body>
 
-<div th:if="${session.user}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
-  <span th:text="'Username: ' + ${session.user.username}"></span> <br>
-  <span th:text="'First name: ' + ${session.user.firstName}"></span> <br>
-  <span th:text="'Last name: ' + ${session.user.lastName}"></span>
+<div th:if="${session.users}" class="position-absolute top-0 end-0 me-5 ls-2 fw-bold">
+    <span th:text="'Username: ' + ${session.users.username}"></span> <br>
+    <span th:text="'First name: ' + ${session.users.firstName}"></span> <br>
+    <span th:text="'Last name: ' + ${session.users.lastName}"></span>
 </div>
 
 <div class="container mt-5">
 
-  <h2>All authors in our database</h2>
-  <hr>
+    <h2>All authors in our database</h2>
+    <hr>
 
-  <a th:href="@{~/admin/addAuthorForm}"
-     class="btn btn-primary mb-2">
-    Add Author
-  </a>
+    <a th:href="@{~/admin/addAuthorForm}"
+       class="btn btn-primary mb-2">
+        Add Author
+    </a>
 
-  <table class="table table-bordered table-striped">
-    <thead>
-    <tr class="table-info">
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr class="table-info">
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
 
-    <tbody>
-    <tr th:each="author : ${authors}">
+        <tbody>
+        <tr th:each="author : ${authors}">
 
-      <td th:text="${author.firstName}"/>
-      <td th:text="${author.lastName}"/>
-      <td>
-        <a  th:href="@{seeAuthorDetails(authorId=${author.id})}"
-            class="btn btn-info me-5">
-            See author details
-        </a>
+            <td th:text="${author.firstName}"/>
+            <td th:text="${author.lastName}"/>
+            <td>
+                <div class="d-flex flex-row">
+                    <a th:href="@{seeAuthorDetails(authorId=${author.id})}"
+                       class="btn btn-info me-5">
+                        See author details
+                    </a>
 
-        <a  th:href="@{~/admin/updateAuthorForm(authorId=${author.id})}"
-            class="btn btn-info">
-            Update Author
-        </a>
+                    <form th:object="${book}" th:action="@{~/admin/deleteAuthor(authorId=${author.id})}"
+                          th:method="DELETE">
+                        <button type="submit"
+                                class="btn btn-danger"
+                                onclick="if (!(confirm('Are you sure you want to delete this author?'))) return false">
+                            Delete
+                        </button>
+                    </form>
 
-        <a  th:href="@{~/admin/deleteAuthor(authorId=${author.id})}"
-            class="btn btn-danger"
-            onclick="if (!(confirm('Are you sure you want to delete this author?'))) return false">
-            Delete Author
-        </a>
+                    <form th:object="${book}" th:action="@{~/admin/updateAuthorForm(authorId=${author.id})}"
+                          th:method="PUT">
+                        <button type="submit"
+                                class="btn btn-info ms-2">
+                            Update
+                        </button>
+                    </form>
 
-        <a  th:href="@{~/admin/bindAuthorToBookList(authorId=${author.id})}"
-            class="btn btn-primary"
-            onclick="if (!(confirm('Are you sure you want to bind book to this author?'))) return false">
-            Bind book
-        </a>
+                    <a th:href="@{~/admin/bindAuthorToBookList(authorId=${author.id})}"
+                       class="btn btn-primary ms-2"
+                       onclick="if (!(confirm('Are you sure you want to bind book to this author?'))) return false">
+                        Bind book
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <a  th:href="@{~/library/menu}"
-      class="btn btn-secondary">
-    Back to menu
-  </a>
+    <a th:href="@{~/library/menu}"
+       class="btn btn-secondary">
+        Back to menu
+    </a>
 
 </div>
 

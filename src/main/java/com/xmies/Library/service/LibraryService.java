@@ -9,7 +9,15 @@ import java.util.List;
 
 public interface LibraryService {
 
-    AuthorDetails findAuthorDetails(int id);
+    boolean bookExistsById(int id);
+
+    boolean authorExistsById(int id);
+
+    boolean authorDetailsExistsById(int id);
+
+    boolean reviewExistsById(int id);
+
+    AuthorDetails findAuthorDetailsById(int id);
 
     void save(AuthorDetails authorDetails);
 
