@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.ModelAndViewAssert;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +24,9 @@ public class EntryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     public void getLoginPage() throws Exception {
@@ -84,7 +88,9 @@ public class EntryControllerTest {
         ModelAndView modelAndView = mvcResult.getModelAndView();
 
         ModelAndViewAssert.assertViewName(modelAndView, "library/entry/registration-successful");
+
+        jdbcTemplate.execute("SET FOREIGN_KEY_CHECKS=0;" +
+                " DELETE FROM Users; SET FOREIGN_KEY_CHECKS=1;");
+        //deleting user we created, so it doesn't interfere with other tests
     }
-
-
 }
