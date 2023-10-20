@@ -29,7 +29,9 @@ public class AuthorDetailsTest {
 
     @AfterEach
     public void afterEach() {
-        violations.clear();
+        if (violations != null) {
+            violations.clear();
+        }
     }
 
     @Test

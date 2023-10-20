@@ -46,6 +46,12 @@ public class UserServiceImpl implements UserService {
         users.setFirstName(libraryUser.getFirstName());
         users.setLastName(libraryUser.getLastName());
 
+        Role role;
+        if (roleRepository.findRoleByName("ROLE_USER") == null) {
+            role = new Role("ROLE_USER");
+            roleRepository.save(role);
+        }
+
         users.addRole(roleRepository.findRoleByName("ROLE_USER"));
 
         userRepository.save(users);

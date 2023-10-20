@@ -1,6 +1,8 @@
 package com.xmies.Library.entity;
 
 
+import com.xmies.Library.entity.userRelated.Role;
+import com.xmies.Library.entity.userRelated.Users;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.AfterEach;
@@ -9,9 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 @SpringBootTest
 public class AuthorTest {
@@ -29,7 +34,9 @@ public class AuthorTest {
 
     @AfterEach
     public void afterEach() {
-        violations.clear();
+        if (violations != null) {
+            violations.clear();
+        }
     }
 
     @Test
@@ -37,6 +44,28 @@ public class AuthorTest {
         violations = validator.validate(author);
 
         assertTrue(violations.isEmpty());
+    }
+
+    @Test
+    public void addBookWhenNull () {
+        assertNull(author.getBooks());
+
+        Book book = new Book("TEST BOOK");
+        author.addBook(book);
+
+        assertTrue(author.getBooks().size() == 1);
+        assertSame(book, author.getBooks().get(0));
+    }
+
+    @Test
+    public void addBookWhenOtherBooksPresent () {
+        author.setBooks(new ArrayList<>(Arrays.asList(new Book(), new Book(), new Book())));
+
+        Book book = new Book("TEST BOOK");
+        author.addBook(book);
+
+        assertTrue(author.getBooks().size() == 4);
+        assertSame(book, author.getBooks().get(3));
     }
 
     @Test

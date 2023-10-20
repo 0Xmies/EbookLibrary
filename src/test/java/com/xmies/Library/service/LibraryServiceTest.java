@@ -9,7 +9,6 @@ import com.xmies.Library.repository.AuthorRepository;
 import com.xmies.Library.repository.BookRepository;
 import com.xmies.Library.repository.ReviewRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,10 +23,10 @@ import static org.mockito.Mockito.when;
 
 @TestPropertySource("/application-test.properties")
 @SpringBootTest
-public class LibraryServiceUnitTest {
+public class LibraryServiceTest {
 
     @Autowired
-    private LibraryService libraryService;
+    private LibraryService libraryServiceWithMocks;
 
     @MockBean
     private AuthorRepository authorRepositoryMock;
@@ -52,7 +51,7 @@ public class LibraryServiceUnitTest {
         AuthorDetails defaultAuthorDetails = new AuthorDetails
                 ("Not known", "Not known", 0);
 
-        Author authorFromService = libraryService.findAuthorAndAuthorDetailById(1);
+        Author authorFromService = libraryServiceWithMocks.findAuthorAndAuthorDetailById(1);
         assertSame(authorFromService.getAuthorDetails().getYearOfBirth(), defaultAuthorDetails.getYearOfBirth());
         assertEquals(authorFromService.getAuthorDetails().getHobby(), defaultAuthorDetails.getHobby());
         assertEquals(authorFromService.getAuthorDetails().getCountryOfOrigin(), defaultAuthorDetails.getCountryOfOrigin());
@@ -63,7 +62,7 @@ public class LibraryServiceUnitTest {
         AuthorDetails authorDetails = new AuthorDetails("A", "B", 3);
 
         when(authorDetailsRepositoryMock.findById(1)).thenReturn(Optional.of(authorDetails));
-        AuthorDetails returnedAuthorDetails = libraryService.findAuthorDetailsById(1);
+        AuthorDetails returnedAuthorDetails = libraryServiceWithMocks.findAuthorDetailsById(1);
 
         assertEquals(authorDetails, returnedAuthorDetails);
     }
@@ -72,7 +71,7 @@ public class LibraryServiceUnitTest {
     public void findAuthorDetailsByIdWhenItDoesNotExistsThrowsException() {
         when(authorDetailsRepositoryMock.findById(1)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class,() -> libraryService.findAuthorDetailsById(1));
+        assertThrows(RuntimeException.class,() -> libraryServiceWithMocks.findAuthorDetailsById(1));
     }
 
     @Test
@@ -81,14 +80,14 @@ public class LibraryServiceUnitTest {
 
         when(authorDetailsRepositoryMock.save(authorDetails)).thenThrow(IllegalArgumentException.class);
 
-        assertThrows(IllegalArgumentException.class,() -> libraryService.save(authorDetails));
+        assertThrows(IllegalArgumentException.class,() -> libraryServiceWithMocks.save(authorDetails));
     }
 
     @Test
     public void deleteAuthorDetailsWithNullIdThrowsException() {
         Integer integer = null;
 
-        assertThrows(NullPointerException.class,() -> libraryService.deleteAuthorDetailsById(integer));
+        assertThrows(NullPointerException.class,() -> libraryServiceWithMocks.deleteAuthorDetailsById(integer));
     }
 
     @Test
@@ -101,7 +100,7 @@ public class LibraryServiceUnitTest {
 
         when(authorRepositoryMock.findAllByOrderByLastNameAsc()).thenReturn(authors);
 
-        assertIterableEquals(authors, libraryService.findAllAuthors());
+        assertIterableEquals(authors, libraryServiceWithMocks.findAllAuthors());
     }
 
     @Test
@@ -109,7 +108,7 @@ public class LibraryServiceUnitTest {
         Author author = new Author("Name", "Last name");
         when(authorRepositoryMock.findById(1)).thenReturn(Optional.of(author));
 
-        Author fromServiceAuthor = libraryService.findAuthorById(1);
+        Author fromServiceAuthor = libraryServiceWithMocks.findAuthorById(1);
 
         assertEquals(author.getFirstName(), fromServiceAuthor.getFirstName());
         assertEquals(author.getLastName(), fromServiceAuthor.getLastName());
@@ -120,7 +119,7 @@ public class LibraryServiceUnitTest {
         when(authorRepositoryMock.findById(1)).thenReturn(Optional.empty());
 
 
-        assertThrows(RuntimeException.class,() -> libraryService.findAuthorById(1));
+        assertThrows(RuntimeException.class,() -> libraryServiceWithMocks.findAuthorById(1));
     }
 
     @Test
@@ -128,7 +127,7 @@ public class LibraryServiceUnitTest {
         Book book = new Book("Test book title");
         when(bookRepositoryMock.findById(1)).thenReturn(Optional.of(book));
 
-        Book fromServiceBook = libraryService.findBookById(1);
+        Book fromServiceBook = libraryServiceWithMocks.findBookById(1);
 
         assertEquals(book.getTitle(), fromServiceBook.getTitle());
     }
@@ -138,7 +137,7 @@ public class LibraryServiceUnitTest {
         when(bookRepositoryMock.findById(1)).thenReturn(Optional.empty());
 
 
-        assertThrows(RuntimeException.class,() -> libraryService.findBookById(1));
+        assertThrows(RuntimeException.class,() -> libraryServiceWithMocks.findBookById(1));
     }
 
     @Test
@@ -148,7 +147,7 @@ public class LibraryServiceUnitTest {
 
         when(reviewRepositoryMock.findById(1)).thenReturn(Optional.of(review));
 
-        Review fromServiceReview = libraryService.findReviewById(1);
+        Review fromServiceReview = libraryServiceWithMocks.findReviewById(1);
 
         assertEquals(review.getRating(), fromServiceReview.getRating());
         assertEquals(review.getComment(), fromServiceReview.getComment());
@@ -159,7 +158,7 @@ public class LibraryServiceUnitTest {
     public void findReviewByIdEmptyThrowException() {
         when(reviewRepositoryMock.findById(1)).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class,() -> libraryService.findReviewById(1));
+        assertThrows(RuntimeException.class,() -> libraryServiceWithMocks.findReviewById(1));
     }
 
     @Test
@@ -167,8 +166,8 @@ public class LibraryServiceUnitTest {
         when(bookRepositoryMock.existsById(1)).thenReturn(true);
         when(bookRepositoryMock.existsById(0)).thenReturn(false);
 
-        assertTrue(libraryService.bookExistsById(1));
-        assertFalse(libraryService.bookExistsById(0));
+        assertTrue(libraryServiceWithMocks.bookExistsById(1));
+        assertFalse(libraryServiceWithMocks.bookExistsById(0));
     }
 
     @Test
@@ -176,8 +175,8 @@ public class LibraryServiceUnitTest {
         when(authorRepositoryMock.existsById(1)).thenReturn(true);
         when(authorRepositoryMock.existsById(0)).thenReturn(false);
 
-        assertTrue(libraryService.authorExistsById(1));
-        assertFalse(libraryService.authorExistsById(0));
+        assertTrue(libraryServiceWithMocks.authorExistsById(1));
+        assertFalse(libraryServiceWithMocks.authorExistsById(0));
     }
 
     @Test
@@ -185,8 +184,8 @@ public class LibraryServiceUnitTest {
         when(authorDetailsRepositoryMock.existsById(1)).thenReturn(true);
         when(authorDetailsRepositoryMock.existsById(0)).thenReturn(false);
 
-        assertTrue(libraryService.authorDetailsExistsById(1));
-        assertFalse(libraryService.authorExistsById(0));
+        assertTrue(libraryServiceWithMocks.authorDetailsExistsById(1));
+        assertFalse(libraryServiceWithMocks.authorExistsById(0));
     }
 
     @Test
@@ -194,8 +193,8 @@ public class LibraryServiceUnitTest {
         when(reviewRepositoryMock.existsById(1)).thenReturn(true);
         when(reviewRepositoryMock.existsById(0)).thenReturn(false);
 
-        assertTrue(libraryService.reviewExistsById(1));
-        assertFalse(libraryService.reviewExistsById(0));
+        assertTrue(libraryServiceWithMocks.reviewExistsById(1));
+        assertFalse(libraryServiceWithMocks.reviewExistsById(0));
     }
     @Test
     public void bindAuthorToBook() {
@@ -208,13 +207,13 @@ public class LibraryServiceUnitTest {
         when(authorRepositoryMock.findById(1)).thenReturn(Optional.of(author));
         when(bookRepositoryMock.findById(1)).thenReturn(Optional.of(book));
 
-        libraryService.bindAuthorToBook(1, 1);
+        libraryServiceWithMocks.bindAuthorToBook(1, 1);
 
         assertEquals(author.getBooks().get(0).getTitle(), book.getTitle());
     }
 
     @Test
-    public void bindAuthorToSameBookAgainWorks() {
+    public void bindAuthorToSameBookWorksWhenRepeating() {
         Author author = new Author("Author of \"My Book\"", "Test last name");
         Book book = new Book("My Book");
         author.addBook(book);
@@ -223,9 +222,8 @@ public class LibraryServiceUnitTest {
         when(authorRepositoryMock.findById(1)).thenReturn(Optional.of(author));
         when(bookRepositoryMock.findById(1)).thenReturn(Optional.of(book));
 
-        libraryService.bindAuthorToBook(1, 1);
+        libraryServiceWithMocks.bindAuthorToBook(1, 1);
 
         assertEquals(author.getBooks().get(0).getTitle(), book.getTitle());
     }
-
 }
