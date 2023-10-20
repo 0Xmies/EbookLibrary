@@ -5,21 +5,15 @@ import com.xmies.Library.entity.userRelated.Users;
 import com.xmies.Library.repository.userRelated.RoleRepository;
 import com.xmies.Library.repository.userRelated.UserRepository;
 import com.xmies.Library.user.LibraryUser;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,8 +36,8 @@ public class UserServiceTest {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    @BeforeEach
-    public void beforeEach() {
+    @AfterEach
+    public void afterEach() {
         jdbcTemplate.execute("SET FOREIGN_KEY_CHECKS=0;" +
                 " DELETE FROM Users; SET FOREIGN_KEY_CHECKS=1;");
     }
