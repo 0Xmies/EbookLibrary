@@ -63,7 +63,7 @@
                     <form th:object="${book}" th:action="@{~/admin/updateBookForm(bookId=${book.id})}" th:method="PUT">
                         <button type="submit"
                                 class="btn btn-info ms-2"
-                                onclick="if (!(confirm('Are you sure you want to delete this book?'))) return false">
+                                onclick="if (!(confirm('Are you sure you want to update this book?'))) return false">
                             Update
                         </button>
                     </form>
