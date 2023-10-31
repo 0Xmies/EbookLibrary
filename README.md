@@ -1,6 +1,6 @@
-# Spring MVC Showcase Project
+# Spring REST Showcase Project
 
-This is a showcase project that features a CRUD API on a MySQL database with a graphical user interface on the web. The project allows users to interact with books, authors with author-details, and reviews, with different permissions based on roles.
+This is a showcase project that features a REST API on a MySQL database with a graphical user interface on the web. The project allows users to interact with books, authors with author-details, and reviews, with different permissions based on roles.
 
 ## Features
 
@@ -9,7 +9,7 @@ This is a showcase project that features a CRUD API on a MySQL database with a g
 - Update and delete reviews (admin)
 - Create book reviews
 - Input data is thoroughly validated for:
-    -  Length validation: Ensuring that input data have required length constraints.
+    - Length validation: Ensuring that input data have required length constraints.
     - Mandatory fields: Ensuring that critical fields are not left empty.
 
 ## Prerequisites
@@ -23,7 +23,7 @@ This is a showcase project that features a CRUD API on a MySQL database with a g
 1. Clone the repository.
 2. Configure the MySQL database settings in the application properties file.
 - You can set spring.jpa.hibernate.ddl-auto=create to have the schema created automatically. This setting results in data deletion upon each creation, but you can switch to 'update' or 'create-only' if you intend to persist data across multiple application executions.
-3. Make sure MySQL database is running.
+3. Make sure MySQL server is running.
 4. Run the application.
 5. Access the application through the provided URL.
 
@@ -32,11 +32,11 @@ This is a showcase project that features a CRUD API on a MySQL database with a g
 The application provides the following functionality through the URLs:
 
 - Access the menu if you are hosting it: [Link to the menu](http://localhost:8080/library/menu)
-- Navigate through the site using the provided buttons and links.
+- Navigate through the site using the provided buttons and links to perform REST operations.
 
 ## Testing
 
-The project has been tested extensively with 80% test coverage. You can find report under /htmlReport.
+The project has been extensively tested, achieving 80% test coverage. You can find the report under `/htmlReport`.
 
 ## Technologies Used
 
@@ -49,7 +49,6 @@ The project has been tested extensively with 80% test coverage. You can find rep
     - thymeleaf
     - web
 - Maven
-- Thymeleaf
 - HTML
 - Bootstrap
 - MySQL
